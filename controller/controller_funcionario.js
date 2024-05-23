@@ -1,6 +1,6 @@
 const message = require('../modulo/config.js')
 const enderecosDAO = require('../model/DAO/endereco.js');
-const DAO = require('../model/DAO/cliente.js')
+const DAO = require('../model/DAO/funcionario.js')
 
 
 const getListar = async function () {
@@ -9,7 +9,7 @@ const getListar = async function () {
     
         if (dados) {
         if(dados.length > 0) {
-            resultJSON.clientes = dados;
+            resultJSON.funcionarios = dados;
             resultJSON.quantidade = dados.length;
             resultJSON.status_code = 200;
             return resultJSON;
@@ -28,7 +28,7 @@ const getBuscarId = async function (id) {
         let dados = await DAO.selectById(id);
         if (dados) {
             if (dados.length > 0) {
-                json.cliente = dados;
+                json.funcionario = dados;
                 json.status_code = 200;
                 return json;
             } else {
@@ -53,7 +53,7 @@ const setInserir = async (dadosBody, contentType) => {
         if (!dadosBody.nome || dadosBody.nome.length > 100 ||
             !dadosBody.telefone || dadosBody.telefone.length > 15 ||
             !dadosBody.email || dadosBody.email.length > 100 ||
-            !dadosBody.senha || dadosBody.senha.length > 255) {
+            !dadosBody.senha || dadosBody.senha.length > 255){
             return message.ERROR_REQUIRED_FIELDS;
         }
 
@@ -69,10 +69,9 @@ const setInserir = async (dadosBody, contentType) => {
         
         let enviarNovoendereco = await enderecosDAO.insert(dadosBody.endereco);
         if (enviarNovoendereco) {
-            let ultimoIdEndereco = await enderecosDAO.pegarUltimoId()
+            let ultimoIdEndereco = await enderecosDAO.selectlastId()
 
              
-            
         dadosBody.endereco_id = ultimoIdEndereco;
         let result = await DAO.insert(dadosBody, ultimoIdEndereco);
 
@@ -81,7 +80,7 @@ const setInserir = async (dadosBody, contentType) => {
             responseJSON.status = message.SUCCESS_CREATED_ITEM.status;
             responseJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code;
             responseJSON.message = message.SUCCESS_CREATED_ITEM.message;
-            responseJSON.cliente = {
+            responseJSON.funcionario = {
                 id: result,
                 nome: dadosBody.nome,
                 telefone: dadosBody.telefone,
@@ -91,10 +90,12 @@ const setInserir = async (dadosBody, contentType) => {
             };
             return responseJSON;
         } else {
+            
             return message.ERROR_INTERNAL_SERVER_DB;
         }
 
         } else {
+            
             return message.ERROR_INTERNAL_SERVER_DB;
         }
     } catch (error) {
@@ -102,7 +103,6 @@ const setInserir = async (dadosBody, contentType) => {
         return message.ERROR_INTERNAL_SERVER;
     }
 };
-
 const setExcluir = async function (id) {
     let json={}
     let result = await DAO.deletar(id)
@@ -115,7 +115,6 @@ const setExcluir = async function (id) {
         return message.ERROR_NOT_FOUND //404
     }
 }
-
 module.exports = {
     setInserir,
     setExcluir,

@@ -8,9 +8,11 @@ const ERROR_INTERNAL_SERVER = {status: false, status_code: 500, message: 'Não f
 
 /************************** MENSAGENS DE SUCESSO ************************************** */
     const SUCCESS_CREATED_ITEM = {status: true, status_code:201,message:'Item criado com sucesso'}
+    const SUCCESS_ACCEPTED_ITEM = {status: true, status_code:202,message:'Resposta aceita com sucesso'}
 
 module.exports={
     SUCCESS_CREATED_ITEM,
+    SUCCESS_ACCEPTED_ITEM,
     ERROR_INVALID_ID,
     ERROR_REQUIRED_FIELDS,
     ERROR_NOT_FOUND,
