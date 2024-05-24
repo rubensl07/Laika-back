@@ -1,10 +1,12 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+var tabela = "tbl_produtos"
+
 // Selecionar todos os perodutos
 const deletar = async function (id) {
     try {
-        const sql = `DELETE FROM tbl_produtos WHERE id = ${id}`;
+        const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true
@@ -12,30 +14,33 @@ const deletar = async function (id) {
             return false
         }
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 const selectAll = async function (){
     try {
-        const sql = `SELECT * FROM TBL_PRODUTOS`;
+        const sql = `SELECT * FROM ${tabela}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 const selectById = async function (search) {
     try {
-        const sql = `select * FROM tbl_produtos WHERE id = ${search}`;
+        const sql = `select * FROM ${tabela} WHERE id = ${search}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 const insert = async function(dados){
     try {
-        let sql = `INSERT INTO tbl_produtos (nome, descricao, preco, img, produto_quantidade_estoque) VALUES (?, ?, ?, ?, ?);`;
+        let sql = `INSERT INTO ${tabela} (nome, descricao, preco, img, quantidade_estoque) VALUES (?, ?, ?, ?, ?);`;
 
         let result = await prisma.$executeRawUnsafe(sql,
             dados.nome,
@@ -49,47 +54,45 @@ const insert = async function(dados){
             return false
         }
     } catch (error) {
+        console.error(error);
         return false
     }
 }
-
-const update = async function (id, dadosBody) {
-    try {
+const update = async function (id, dados) {
+    try{
         let sql = `
-            UPDATE tbl_produtos
+            UPDATE ${tabela}
             SET 
-                nome = '${dadosBody.nome}',
-                descricao = '${dadosBody.descricao}',
-                preco = ${dadosBody.preco},
-                img = '${dadosBody.img}',
-                produto_quantidade_estoque = ${dadosBody.produto_quantidade_estoque}
+                nome = '${dados.nome}',
+                descricao = '${dados.descricao}',
+                preco = ${dados.preco},
+                img = '${dados.img}',
+                quantidade_estoque = ${dados.quantidade_estoque}
             WHERE id = ${id};
         `;
-
-       
-        let result = await prisma.$executeRawUnsafe(sql);
-
-        if (result) {
-            return true;
+        let result = await prisma.$executeRawUnsafe(sql)
+        if(result) {
+            return true
         } else {
-            return false;
+            return false
         }
-    } catch (error) {
+    } catch (error){
         console.error(error);
-        return false;
+        return false
     }
 }
 
 const pegarUltimoId = async function() {
     try {
-        let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM TBL_ENDERECO limit 1;`
+        let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM ${tabela} limit 1;`
     let result = await prisma.$queryRawUnsafe(sql)
     if(result){
-        return result
+        return result[0].id
     } else {
          return false
     }
     } catch (error) {
+        console.error(error);
         return false    
     }
 }

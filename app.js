@@ -22,12 +22,12 @@ server.use((request,response,next)=>{
 const controllerClientes = require('./controller/controller_clientes.js')
 
 server.get('/v1/laika/clientes', cors(), async function(request, response,){
-    let dados = await controllerClientes.getListar();
+    let dados = await controllerClientes.getAll();
     response.status(dados.status_code)
     response.json(dados)
 })
 server.get('/v1/laika/cliente/:id', cors(), async function(request, response,){
-    let dados = await controllerClientes.getBuscarId(request.params.id);
+    let dados = await controllerClientes.getId(request.params.id);
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -50,12 +50,12 @@ server.delete('/v1/laika/cliente/:id', cors(), async function(request,response){
 const controllerFuncionarios = require('./controller/controller_funcionario.js')
 
 server.get('/v1/laika/funcionarios', cors(), async function(request, response,){
-    let dados = await controllerFuncionarios.getListar();
+    let dados = await controllerFuncionarios.getAll();
     response.status(dados.status_code)
     response.json(dados)
 })
 server.get('/v1/laika/funcionario/:id', cors(), async function(request, response,){
-    let dados = await controllerFuncionarios.getBuscarId(request.params.id);
+    let dados = await controllerFuncionarios.getId(request.params.id);
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -80,12 +80,12 @@ server.delete('/v1/laika/funcionario/:id', cors(), async function(request,respon
 const controllerProdutos = require('./controller/controller_produtos.js')
 
 server.get('/v1/laika/produtos', cors(), async function(request, response,){
-    let dados = await controllerProdutos.getListar();
+    let dados = await controllerProdutos.getAll();
     response.status(dados.status_code)
     response.json(dados)
 })
 server.get('/v1/laika/produto/:id', cors(), async function(request, response,){
-    let dados = await controllerProdutos.getBuscarId(request.params.id);
+    let dados = await controllerProdutos.getId(request.params.id);
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -108,45 +108,70 @@ server.delete('/v1/laika/produto/:id', cors(), async function(request,response){
     response.json(dados)
 })
 
-
-server.put('/v1/laika/produto/:id', async function(request, response) {
+server.put('/v1/laika/produto/:id', cors(), bodyParserJSON,async function(request,response){
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
-    console.log(dadosBody);
-    let id = request.params.id;
 
-    let dados = await controllerProdutos.setAtualizar(id, dadosBody, contentType);
+    let result = await controllerProdutos.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
 
-    // Validar content type
-    if (String(contentType).toLowerCase() !== 'application/json') {
-        response.status(415)(dados.status_code);
-        return;
-    }
 
-    let resultadoAtualizacao = await controllerProdutos.setAtualizar(id, dados);
+// server.put('/v1/laika/produto/:id', async function(request, response) {
+//     let contentType = request.headers['content-type'];
+//     let dadosBody = request.body;
+//     console.log(dadosBody);
+//     let id = request.params.id;
 
-    response.status(resultadoAtualizacao.status_code);
-    response.json(resultadoAtualizacao);
-});
+//     let dados = await controllerProdutos.setAtualizar(id, dadosBody, contentType);
+
+//     // Validar content type
+//     if (String(contentType).toLowerCase() !== 'application/json') {
+//         response.status(415)(dados.status_code);
+//         return;
+//     }
+
+//     let resultadoAtualizacao = await controllerProdutos.setAtualizar(id, dados);
+
+//     response.status(resultadoAtualizacao.status_code);
+//     response.json(resultadoAtualizacao);
+// });
 
 //------------------------------------------------------------SERVICOS-----------------------------------------------------------------------//
 
 const controllerServicos = require('./controller/controller_servicos.js')
 
 server.get('/v1/laika/servicos', cors(), async function(request, response,){
-    let dados = await controllerServicos.getListar();
+    let dados = await controllerServicos.getAll();
     response.status(dados.status_code)
     response.json(dados)
 })
 server.get('/v1/laika/servico/:id', cors(), async function(request, response,){
-    let dados = await controllerServicos.getBuscarId(request.params.id);
+    let dados = await controllerServicos.getId(request.params.id);
     response.status(dados.status_code)
     response.json(dados)
+})
+server.post('/v1/laika/servico', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerServicos.setInserir(dadosBody,contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+server.put('/v1/laika/servico/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerServicos.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
 })
 
 server.delete('/v1/laika/servico/:id', cors(), async function(request,response){
     let dados = await controllerServicos.setExcluir(request.params.id)
-
+    
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -156,12 +181,34 @@ server.delete('/v1/laika/servico/:id', cors(), async function(request,response){
 const controllerEnderecos = require('./controller/controller_endereco.js')
 
 server.get('/v1/laika/enderecos', cors(), async function(request, response,){
-    let dados = await controllerEnderecos.getListar();
+    let dados = await controllerEnderecos.getAll();
     response.status(dados.status_code)
     response.json(dados)
 })
 server.get('/v1/laika/endereco/:id', cors(), async function(request, response,){
-    let dados = await controllerEnderecos.getBuscarId(request.params.id);
+    let dados = await controllerEnderecos.getId(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.post('/v1/laika/endereco', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerEnderecos.setInserir(dadosBody,contentType)
+    response.status(result.status_code)
+    response.json(result)
+})
+server.put('/v1/laika/endereco/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerEnderecos.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
+server.delete('/v1/laika/endereco/:id', cors(), async function(request,response){
+    let dados = await controllerEnderecos.setExcluir(request.params.id)
+
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -169,23 +216,35 @@ server.get('/v1/laika/endereco/:id', cors(), async function(request, response,){
 //-----------------------------------------------------------------CARGO-----------------------------------------------------------------------//
 
 const controllerCargos = require('./controller/controller_cargo.js')
-server.post('/v1/laika/cargo', async function(request, response) {
+server.post('/v1/laika/cargo', cors(), bodyParserJSON,async function(request,response){
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
 
-    let newCargo = await controllerCargos.setInsert(dadosBody, contentType);
+    let newCargo = await controllerCargos.setInserir(dadosBody, contentType);
 
     response.status(newCargo.status_code);
     response.json(newCargo);
 });
+server.put('/v1/laika/cargo/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerCargos.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
 
 
-server.get('/v1/laika/cargos', async function(request, response) {
-    let todosCargos = await controllerCargos.getAll();
-
-    response.status(todosCargos.status_code);
-    response.json(todosCargos);
-});
+server.get('/v1/laika/cargos', cors(), async function(request, response,){
+    let dados = await controllerCargos.getAll();
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/cargo/:id', cors(), async function(request, response,){
+    let dados = await controllerCargos.getId(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
 
 server.delete('/v1/laika/cargo/:id', cors(), async function(request,response){
     let dados = await controllerCargos.setExcluir(request.params.id)

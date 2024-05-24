@@ -2,17 +2,30 @@ const message = require('../modulo/config.js')
 const enderecosDAO = require('../model/DAO/endereco.js');
 const DAO = require('../model/DAO/funcionario.js')
 
-
-const getListar = async function () {
-    let resultJSON = {};
+const getAll = async function () {
+    let json = {};
     let dados = await DAO.selectAll();
-    
         if (dados) {
         if(dados.length > 0) {
-            resultJSON.funcionarios = dados;
-            resultJSON.quantidade = dados.length;
-            resultJSON.status_code = 200;
-            return resultJSON;
+            for (let index = 0; index < dados.length; index++) {
+                if(dados[index].endereco_id){
+                    const endereco = await enderecosDAO.selectById(dados[index].endereco_id)
+                    const novoEndereco = {}
+                    novoEndereco.rua = endereco[0].rua
+                    novoEndereco.bairro = endereco[0].bairro
+                    novoEndereco.cidade = endereco[0].cidade
+                    novoEndereco.estado = endereco[0].estado
+                    if(endereco[0].complemento){
+                        novoEndereco.complemento = endereco[0].complemento
+                    }
+                    dados[index].endereco = novoEndereco
+                }
+                delete dados[index].endereco_id
+            }
+            json.dados = dados;
+            json.quantidade = dados.length;
+            json.status_code = 200;
+            return json;
         } else {
             return message.ERROR_NOT_FOUND //404
         }
@@ -20,7 +33,7 @@ const getListar = async function () {
         return message.ERROR_INTERNAL_SERVER_DB //500
     }
 }
-const getBuscarId = async function (id) {
+const getId = async function (id) {
     let json = {};
     if (id == '' || id == undefined || isNaN(id)) {
         return message.ERROR_INVALID_ID; //400
@@ -28,9 +41,23 @@ const getBuscarId = async function (id) {
         let dados = await DAO.selectById(id);
         if (dados) {
             if (dados.length > 0) {
-                json.funcionario = dados;
-                json.status_code = 200;
-                return json;
+              if(dados[0].endereco_id){
+                    const endereco = await enderecosDAO.selectById(dados[0].endereco_id)
+                    const novoEndereco = {}
+                    novoEndereco.rua = endereco[0].rua
+                    novoEndereco.bairro = endereco[0].bairro
+                    novoEndereco.cidade = endereco[0].cidade
+                    novoEndereco.estado = endereco[0].estado
+                    if(endereco[0].complemento){
+                        novoEndereco.complemento = endereco[0].complemento
+                    }
+                    dados[0].endereco = novoEndereco
+                }
+                delete dados[0].endereco_id
+
+                json.dados = dados[0]
+                json.status_code = 200
+                return json
             } else {
                 return message.ERROR_NOT_FOUND //404
             }
@@ -118,6 +145,6 @@ const setExcluir = async function (id) {
 module.exports = {
     setInserir,
     setExcluir,
-    getListar,
-    getBuscarId
+    getAll,
+    getId
 };

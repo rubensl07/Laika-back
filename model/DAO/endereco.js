@@ -1,30 +1,117 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+var tabela = "tbl_endereco"
+var tabelaClientes = "tbl_clientes"
+var tabelaFuncionarios = "tbl_funcionarios"
+var tabelaFornecedores = "tbl_fornecedores"
+
+
+
 
 const insert = async function(dados){
     try {
-        let sql = `INSERT INTO tbl_endereco (rua, bairro, cidade, estado, complemento) VALUES (?, ?, ?, ?, ?);`;
-
-        let result = await prisma.$executeRawUnsafe(sql, 
-            dados.rua,
-            dados.bairro,
-            dados.cidade,
-            dados.estado,
-            dados.complemento);
+        let sql
+        let result = null
+        if(
+            dados.complemento != '' &&
+            dados.complemento != null &&
+            dados.complemento != undefined
+        )
+        {
+            sql = `INSERT INTO ${tabela} (
+                rua, 
+                bairro,
+                cidade, 
+                estado, 
+                complemento
+            ) VALUES (?, ?, ?, ?, ?)`;
+            result = await prisma.$executeRawUnsafe(sql, 
+                dados.rua,
+                dados.bairro,
+                dados.cidade,
+                dados.estado,
+                dados.complemento
+            )
+        } else {
+            sql = `INSERT INTO ${tabela} (
+                rua, 
+                bairro,
+                cidade, 
+                estado
+            ) VALUES (?, ?, ?, ?)`
+            result = await prisma.$executeRawUnsafe(sql, 
+                dados.rua,
+                dados.bairro,
+                dados.cidade,
+                dados.estado
+            )
+        }
         if (result) {
             return true
         } else {
             return false
         }
     } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+
+const update = async function (id, dados) {
+    try{
+        let sql
+        let result = null
+        if(
+            dados.complemento != '' &&
+            dados.complemento != null &&
+            dados.complemento != undefined
+        ){
+            sql = `
+            UPDATE ${tabela}
+            SET 
+                rua = '${dados.rua}',
+                bairro = '${dados.bairro}',
+                cidade = '${dados.cidade}',
+                estado = '${dados.estado}',
+                complemento = ${dados.complemento}
+            WHERE id = ${id}
+        `
+        result = await prisma.$executeRawUnsafe(sql)
+        } else {
+            sql = `
+            UPDATE ${tabela}
+            SET 
+                rua = '${dados.rua}',
+                bairro = '${dados.bairro}',
+                cidade = '${dados.cidade}',
+                estado = '${dados.estado}'
+            WHERE id = ${id}
+        `
+        result = await prisma.$executeRawUnsafe(sql)
+        }
+        console.log(sql);
+        if(result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error){
+        console.error(error);
         return false
     }
 }
 
 const deletar = async function (id) {
     try {
-        const sql = `DELETE FROM tbl_endereco WHERE id = ${id}`;
+        const sqlClientes = `UPDATE ${tabelaClientes} SET endereco_id = null WHERE endereco_id = ${id}` 
+        const sqlFuncionarios = `UPDATE ${tabelaFuncionarios} SET endereco_id = null WHERE endereco_id = ${id}` 
+        const sqlFornecedores = `UPDATE ${tabelaFornecedores} SET endereco_id = null WHERE endereco_id = ${id}` 
+        const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
+
+        await prisma.$executeRawUnsafe(sqlClientes)
+        await prisma.$executeRawUnsafe(sqlFuncionarios)
+        await prisma.$executeRawUnsafe(sqlFornecedores)
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true
@@ -32,6 +119,7 @@ const deletar = async function (id) {
             return false
         }
     } catch (error) {
+        console.error(error);
         return false
     }
 }
@@ -39,33 +127,36 @@ const deletar = async function (id) {
 // Selecionar todos os endereços
 const selectAll = async function (){
     try {
-        const sql = `SELECT * FROM TBL_ENDERECO`;
+        const sql = `SELECT * FROM ${tabela}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 const selectById = async function (search) {
     try {
-        const sql = `select * from tbl_endereco WHERE id = ${search}`;
+        const sql = `select * from ${tabela} WHERE id = ${search}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 
 const pegarUltimoId = async function() {
     try {
-        let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM TBL_ENDERECO limit 1;`
+        let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM ${tabela} limit 1;`
     let result = await prisma.$queryRawUnsafe(sql)
     if(result){
-        return parseInt(result[0].id)
+        return result[0].id
     } else {
          return false
     }
     } catch (error) {
+        console.error(error);
         return false    
     }
 }
@@ -74,6 +165,7 @@ const pegarUltimoId = async function() {
 
 module.exports= {
     insert,
+    update,
     deletar,
     pegarUltimoId,
     selectById,

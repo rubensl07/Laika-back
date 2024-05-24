@@ -1,42 +1,47 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+var tabela = "tbl_clientes"
+
 // Selecionar todos os clientes
 const selectAll = async function (){
     try {
-        const sql = `SELECT * FROM TBL_CLIENTES`;
+        const sql = `SELECT * FROM ${tabela}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 const selectById = async function (search) {
     try {
-        const sql = `select * FROM tbl_clientes WHERE id = ${search}`;
+        const sql = `select * FROM ${tabela} WHERE id = ${search}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result
     } catch (error) {
+        console.error(error);
         return false
     }
 }
 const pegarUltimoId = async function() {
     try {
-        let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM TBL_ENDERECO limit 1;`
+        let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM ${tabela} limit 1;`
     let result = await prisma.$queryRawUnsafe(sql)
     if(result){
-        return result
+        return result[0].id
     } else {
          return false
     }
     } catch (error) {
+        console.error(error);
         return false    
     }
 }
 const insert = async (dados, ultimoIdEndereco) => {
     try {
         // Inserir o cliente
-        let sql = `INSERT INTO tbl_clientes (nome, telefone, email, senha, endereco_id, img) VALUES (?, ?, ?, ?, ?, ?)`;
+        let sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id, img) VALUES (?, ?, ?, ?, ?, ?)`;
         let result = await prisma.$executeRawUnsafe(sql,
              dados.nome,
               dados.telefone,
@@ -56,7 +61,7 @@ const insert = async (dados, ultimoIdEndereco) => {
 }
 const deletar = async function (id) {
     try {
-        const sql = `DELETE FROM tbl_clientes WHERE id = ${id}`;
+        const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
         let result = await prisma.$executeRawUnsafe(sql)
 
         if (result) {
@@ -65,6 +70,7 @@ const deletar = async function (id) {
             return false
         }
     } catch (error) {
+        console.error(error);
         return false
     }
 }

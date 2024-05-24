@@ -2,7 +2,7 @@ const message = require('../modulo/config.js')
 const DAO = require('../model/DAO/produto.js')
 
 
-const getListar = async function () {
+const getAll = async function () {
     let resultJSON = {};
     let dados = await DAO.selectAll();
     
@@ -19,7 +19,7 @@ const getListar = async function () {
         return message.ERROR_INTERNAL_SERVER_DB //500
     }
 }
-const getBuscarId = async function (id) {
+const getId = async function (id) {
     let json = {};
     if (id == '' || id == undefined || isNaN(id)) {
         return message.ERROR_INVALID_ID; //400
@@ -27,7 +27,7 @@ const getBuscarId = async function (id) {
         let dados = await DAO.selectById(id);
         if (dados) {
             if (dados.length > 0) {
-                json.produto = dados;
+                json.dados = dados[0];
                 json.status_code = 200;
                 return json;
             } else {
@@ -57,12 +57,12 @@ const setInserir = async function (dados, contentType) {
     if (String(contentType).toLowerCase() == 'application/json'){
     let json = {}
     if (
-        dados.nome || dados.nome.length > 100 ||
-        dados.descricao || dados.descricao.length > 65000 ||
-        dados.img || dados.img.length > 100 ||
-        isNaN(dados.quantidade_estoque)
+        dados.nome == ''|| dados.nome == undefined|| dados.nome == null||dados.nome.length > 100 ||
+        dados.descricao == ''|| dados.descricao == undefined|| dados.descricao == null||dados.descricao.length > 65000 ||
+        dados.img == ''|| dados.img == undefined|| dados.img == null||dados.img.length > 65000 ||
+        dados.quantidade_estoque == ''|| dados.quantidade_estoque == undefined|| dados.quantidade_estoque == null||isNaN(dados.quantidade_estoque)
         )
-        {
+    {
        return message.ERROR_REQUIRED_FIELDS //400
     } else {
             let result = await DAO.insert(dados)
@@ -72,7 +72,7 @@ const setInserir = async function (dados, contentType) {
                 json.status = message.SUCCESS_CREATED_ITEM.status
                 json.status_code = message.SUCCESS_CREATED_ITEM.status_code
                 json.message = message.SUCCESS_CREATED_ITEM.message
-                json.id = 'ID adicionado: '+id
+                json.id = parseInt(id)
                 return json //201
             } else {
                 return message.ERROR_INTERNAL_SERVER_DB //500
@@ -82,40 +82,48 @@ const setInserir = async function (dados, contentType) {
     return message.ERROR_CONTENT_TYPE // 415
 }
     }catch(error){
+        console.error(error);
         return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
     }
 }
-
 const setAtualizar = async function (id, dados, contentType) {
-    try {
-        // Validação dos campos obrigatórios
-        console.log(dados);
-        if (!dados.nome || dados.nome.length > 100 ||
-            !dados.descricao || dados.descricao.length > 200 ||
-            !dados.img || dados.img.length > 100 ||
-            typeof dados.preco > 1000000 ||
-            typeof dados.produto_quantidade_estoque > 1000000) {
-            return message.ERROR_REQUIRED_FIELDS;
-        }
-
-        let atualizado = await DAO.update(id, dados);
-
-        if (atualizado) {
-            return message.SUCCESS_ACCEPTED_ITEM;
+    try{
+        if(String(contentType).toLowerCase()== 'application/json'){
+            let json = {}
+            if (
+                dados.nome == ''|| dados.nome == undefined|| dados.nome == null||dados.nome.length > 100 ||
+                dados.descricao == ''|| dados.descricao == undefined|| dados.descricao == null||dados.descricao.length > 65000 ||
+                dados.img == ''|| dados.img == undefined|| dados.img == null||dados.img.length > 65000 ||
+                dados.quantidade_estoque == ''|| dados.quantidade_estoque == undefined|| dados.quantidade_estoque == null||isNaN(dados.quantidade_estoque)
+                )
+            {
+               return message.ERROR_REQUIRED_FIELDS //400
+            } else {
+                let result = await DAO.update(id, dados)
+                if(result) {
+                    json.dados = dados
+                    json.status = message.SUCCESS_ACCEPTED_ITEM.status
+                    json.status_code = message.SUCCESS_ACCEPTED_ITEM.status_code
+                    json.message = message.SUCCESS_ACCEPTED_ITEM.message
+                    json.id = parseInt(id)
+                    return json //201
+                } else {
+                    return message.ERROR_NOT_FOUND //404
+                }
+            }
         } else {
-            return message.ERROR_INTERNAL_SERVER_DB;
+            return message.ERROR_CONTENT_TYPE // 415
         }
-    } catch (error) {
+    } catch (error){
         console.error(error);
-        console.log(error);
-        return message.ERROR_INTERNAL_SERVER;
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
     }
 }
 
 module.exports = {
     setExcluir,
-    getListar,
-    getBuscarId,
+    getAll,
+    getId,
     setInserir,
     setAtualizar
 }
