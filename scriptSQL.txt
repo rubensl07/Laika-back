@@ -129,14 +129,16 @@ INSERT INTO tbl_animal_tipo (nome,icon) VALUES
 CREATE TABLE tbl_animal_raca (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     tipo_id INT NOT NULL,
+    srd BOOLEAN DEFAULT FALSE,
 	FOREIGN KEY (tipo_id) REFERENCES tbl_animal_tipo(id),
     nome VARCHAR(50) NOT NULL
 );
+INSERT INTO tbl_animal_raca (tipo_id, nome, srd) VALUES 
+(1, "Cachorro SRD", true),
+(2, "Gato SRD", true),
+(3, "Tartaruga SRD", true),
+(4, "Pássaro SRD", true);
 INSERT INTO tbl_animal_raca (tipo_id, nome) VALUES 
-(1, "SRD"),
-(2, "SRD"),
-(3, "SRD"),
-(4, "SRD"),
 (1,"Labrador"),
 (1,"Pincher"),
 (1,"Salsicha"),
@@ -171,7 +173,9 @@ CREATE TABLE tbl_animais (
 select * from tbl_clientes;
 INSERT INTO tbl_animais (nome,nascimento,peso,cliente_id,porte_id,raca_id) VALUES 
 ("Paçoca","2014-10-15",20,1,1,7),
-("Gigi","2010-02-10",10,2,1,9);
+("Gigi","2010-02-10",10,2,1,9),
+("Junior","2020-03-11",8,1,2,1);
+;
 
 
 -- Create tbl_agendamentos
@@ -277,6 +281,9 @@ select * from tbl_clientes;
 select tbl_animais.id,tbl_animais.nome,nascimento,peso,tbl_animais.img,tipo_id,porte_id, raca_id from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id;
 describe tbl_animal_raca;
 show tables;
-select tbl_animais.id,tbl_animais.nome,nascimento,peso,tbl_animais.img,tipo_id,porte_id, raca_id from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id;
+select * from tbl_animais;
+select tbl_clientes.nome as Dono, tbl_animais.nome,nascimento,peso,tbl_animal_porte.nome as porte, tbl_animal_raca.nome as raca from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id join tbl_animal_raca on raca_id = tbl_animal_raca.id join tbl_animal_porte on porte_id = tbl_animal_porte.id;
+select * from tbl_animal_raca;
+SELECT * FROM tbl_animal_raca WHERE tipo_id = 1;
 
 update tbl_clientes set email = 'sla@' where id =1;
