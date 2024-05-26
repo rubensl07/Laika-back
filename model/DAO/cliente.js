@@ -14,9 +14,9 @@ const selectAll = async function (){
         return false
     }
 }
-const selectById = async function (search) {
+const selectById = async function (id) {
     try {
-        const sql = `select * FROM ${tabela} WHERE id = ${search}`;
+        const sql = `select * FROM ${tabela} WHERE id = ${id}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result
     } catch (error) {
@@ -38,25 +38,55 @@ const pegarUltimoId = async function() {
         return false    
     }
 }
-const insert = async (dados, ultimoIdEndereco) => {
+
+const insert = async function(dados){
     try {
-        // Inserir o cliente
-        let sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id, img) VALUES (?, ?, ?, ?, ?, ?)`;
+        let sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, img, endereco_id) VALUES (?, ?, ?, ?, ?, ?);`;
         let result = await prisma.$executeRawUnsafe(sql,
-             dados.nome,
-              dados.telefone,
-               dados.email,
-                dados.senha,
-                 ultimoIdEndereco,
-                  dados.img);
+            dados.nome,
+            dados.telefone,
+            dados.email,
+            dados.senha,
+            dados.img,
+            dados.endereco_id);
         if (result) {
-            return result;
+            return true
         } else {
-            return false;
+            return false
         }
     } catch (error) {
         console.error(error);
-        return false;
+        return false
+    }
+}
+const update = async function (id, dados) {
+    try{
+        const sqlInicio = `
+        UPDATE ${tabela} SET `
+        let sqlMeio = `
+                nome = '${dados.nome}',
+                email = '${dados.email}',
+                senha = '${dados.senha}'`;
+        if(dados.img){
+            sqlMeio += `, 
+                img = '${dados.img}'`
+        }
+        if(dados.telefone){
+            sqlMeio += `, 
+                telefone = ${dados.telefone}`
+        }
+        const sqlFinal = ` 
+        WHERE id = ${id}`
+        const sql = sqlInicio+sqlMeio+sqlFinal
+        let result = await prisma.$executeRawUnsafe(sql)
+        if(result) {
+            return true
+        } else {
+            return false
+        }
+    } catch (error){
+        console.error(error);
+        return false
     }
 }
 const deletar = async function (id) {
@@ -77,10 +107,12 @@ const deletar = async function (id) {
 
 // Leonid é mó legal
 // O Marcel tbm
+// O Vitor ainda mais
 module.exports= {
     selectAll,
     selectById,
     pegarUltimoId,
     insert,
+    update,
     deletar
 }

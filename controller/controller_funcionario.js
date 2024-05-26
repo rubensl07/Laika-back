@@ -68,68 +68,106 @@ const getId = async function (id) {
     }
 }
 
-const setInserir = async (dadosBody, contentType) => {
+const setInserir = async function (dados, contentType) {
     try {
-        let responseJSON = {};
-    
-        if (String(contentType).toLowerCase() !== 'application/json') {
-            return message.ERROR_CONTENT_TYPE;
-        }
-
-   
-        if (!dadosBody.nome || dadosBody.nome.length > 100 ||
-            !dadosBody.telefone || dadosBody.telefone.length > 15 ||
-            !dadosBody.email || dadosBody.email.length > 100 ||
-            !dadosBody.senha || dadosBody.senha.length > 255){
-            return message.ERROR_REQUIRED_FIELDS;
-        }
-
-       
-        if (!dadosBody.endereco || 
-            !dadosBody.endereco.rua || dadosBody.endereco.rua.length > 100 ||
-            !dadosBody.endereco.bairro || dadosBody.endereco.bairro.length > 50 ||
-            !dadosBody.endereco.cidade || dadosBody.endereco.cidade.length > 50 ||
-            !dadosBody.endereco.estado || dadosBody.endereco.estado.length !== 2) {
-            return message.ERROR_REQUIRED_FIELDS;
-        }
-
-        
-        let enviarNovoendereco = await enderecosDAO.insert(dadosBody.endereco);
-        if (enviarNovoendereco) {
-            let ultimoIdEndereco = await enderecosDAO.selectlastId()
-
-             
-        dadosBody.endereco_id = ultimoIdEndereco;
-        let result = await DAO.insert(dadosBody, ultimoIdEndereco);
-
-        if (result) {
-           
-            responseJSON.status = message.SUCCESS_CREATED_ITEM.status;
-            responseJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code;
-            responseJSON.message = message.SUCCESS_CREATED_ITEM.message;
-            responseJSON.funcionario = {
-                id: result,
-                nome: dadosBody.nome,
-                telefone: dadosBody.telefone,
-                email: dadosBody.email,
-                senha: dadosBody.senha,
-                endereco_id: ultimoIdEndereco
-            };
-            return responseJSON;
+    if (String(contentType).toLowerCase() == 'application/json'){
+    let json = {}
+    if (
+        dados.nome == ''|| dados.nome == undefined|| dados.nome == null||dados.nome.length > 100 ||
+        dados.telefone == ''|| dados.telefone == undefined|| dados.telefone == null||dados.telefone.length > 11 ||
+        dados.email == ''|| dados.email == undefined|| dados.email == null||dados.email.length > 100 || 
+        dados.senha == ''|| dados.senha == undefined|| dados.senha == null||dados.senha.length > 100
+        )
+    {
+       return message.ERROR_REQUIRED_FIELDS //400
+    } else {
+        if(!dados.endereco){
+            return message.ERROR_REQUIRED_FIELDS //400
         } else {
-            
-            return message.ERROR_INTERNAL_SERVER_DB;
-        }
-
-        } else {
-            
-            return message.ERROR_INTERNAL_SERVER_DB;
-        }
-    } catch (error) {
-        console.error(error);
-        return message.ERROR_INTERNAL_SERVER;
+        if (
+            dados.endereco.rua == ''|| dados.endereco.rua == undefined|| dados.endereco.rua == null||dados.endereco.rua.length > 100 ||
+            dados.endereco.bairro == ''|| dados.endereco.bairro == undefined|| dados.endereco.bairro == null||dados.endereco.bairro.length > 50 ||
+            dados.endereco.cidade == ''|| dados.endereco.cidade == undefined|| dados.endereco.cidade == null||dados.endereco.cidade.length > 50 ||
+            dados.endereco.estado == ''|| dados.endereco.estado == undefined|| dados.endereco.estado == null||dados.endereco.estado.length != 2
+            ) 
+            {
+                return message.ERROR_REQUIRED_FIELDS //400
+            } else {
+                let resultEndereco = await enderecosDAO.insert(dados.endereco)
+                if(resultEndereco){
+                    dados.endereco_id = parseInt(await enderecosDAO.pegarUltimoId())
+                    let result = await DAO.insert(dados)
+                    let id = await DAO.pegarUltimoId()
+                    if(result && id){
+                        json.dados = dados
+                        json.status = message.SUCCESS_CREATED_ITEM.status
+                        json.status_code = message.SUCCESS_CREATED_ITEM.status_code
+                        json.message = message.SUCCESS_CREATED_ITEM.message
+                        json.id = parseInt(id)
+                        return json //201
+                    } else {
+                        return message.ERROR_INTERNAL_SERVER_DB //500
+                    }
+                } else {
+                    return message.ERROR_INTERNAL_SERVER_DB //500
+                }
+            }
     }
-};
+}
+} else {
+    return message.ERROR_CONTENT_TYPE // 415
+}
+    }catch(error){
+        console.error(error);
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
+const setAtualizar = async function (id, dados, contentType) {
+    try{
+        if(String(contentType).toLowerCase()== 'application/json'){
+            let json = {}
+            if (
+                dados.nome == ''|| dados.nome == undefined|| dados.nome == null||dados.nome.length > 100 ||
+                dados.email == ''|| dados.email == undefined|| dados.email == null||dados.email.length > 100 ||
+                dados.senha == ''|| dados.senha == undefined|| dados.senha == null||dados.senha.length > 100
+                )
+            {
+               return message.ERROR_REQUIRED_FIELDS //400
+            } else {
+                if(dados.endereco){
+                    if(!(await DAO.selectById(id)).length>0){
+                        return message.ERROR_NOT_FOUND //404
+                    } 
+                    const idEndereco = (await DAO.selectById(id))[0].endereco_id
+                    const resultEndereco = await enderecosDAO.update(idEndereco,dados.endereco)
+                    //NÃO SEI SE ESTÁ CORRETO ESSA VERIFICAÇÃO///////
+                    if(!resultEndereco){
+                        return message.ERROR_REQUIRED_FIELDS //400
+                    } 
+                    ///////////////////////////
+                }
+                let result = await DAO.update(id, dados)
+                if(result) {
+                    json.dados = dados
+                    json.status = message.SUCCESS_ACCEPTED_ITEM.status
+                    json.status_code = message.SUCCESS_ACCEPTED_ITEM.status_code
+                    json.message = message.SUCCESS_ACCEPTED_ITEM.message
+                    json.id = parseInt(id)
+                    return json //201
+                } else {
+                    return message.ERROR_NOT_FOUND //404
+                }
+            }
+        } else {
+            return message.ERROR_CONTENT_TYPE // 415
+        }
+    } catch (error){
+        console.error(error);
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
+
 const setExcluir = async function (id) {
     let json={}
     let result = await DAO.deletar(id)
@@ -144,6 +182,7 @@ const setExcluir = async function (id) {
 }
 module.exports = {
     setInserir,
+    setAtualizar,
     setExcluir,
     getAll,
     getId

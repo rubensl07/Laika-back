@@ -59,7 +59,7 @@ const setInserir = async function (dados, contentType) {
     if (
         dados.nome == ''|| dados.nome == undefined|| dados.nome == null||dados.nome.length > 100 ||
         dados.descricao == ''|| dados.descricao == undefined|| dados.descricao == null||dados.descricao.length > 65000 ||
-        dados.img == ''|| dados.img == undefined|| dados.img == null||dados.img.length > 65000 ||
+        dados.img == ''|| dados.img == undefined|| dados.img == null||dados.img.length > 200 ||
         dados.quantidade_estoque == ''|| dados.quantidade_estoque == undefined|| dados.quantidade_estoque == null||isNaN(dados.quantidade_estoque)
         )
     {

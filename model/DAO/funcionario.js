@@ -12,7 +12,7 @@ const insert = async function(dados){
             dados.telefone,
             dados.email,
             dados.senha,
-            ultimoIdEndereco);
+            dados.endereco_id);
         if (result) {
             return true
         } else {
@@ -23,6 +23,7 @@ const insert = async function(dados){
         return false
     }
 }
+
 const update = async function (id, dados) {
     try{
         let sql = `
@@ -30,9 +31,8 @@ const update = async function (id, dados) {
             SET 
                 nome = '${dados.nome}',
                 telefone = '${dados.telefone}',
-                email = ${dados.email},
-                senha = '${dados.senha}',
-                endereco_id = ${dados.endereco_id}
+                email = '${dados.email}',
+                senha = '${dados.senha}'
             WHERE id = ${id};
         `;
         let result = await prisma.$executeRawUnsafe(sql)

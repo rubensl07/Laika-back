@@ -38,7 +38,15 @@ server.post('/v1/laika/cliente', cors(), bodyParserJSON, async function(request,
 
     response.status(dados.status_code);
     response.json(dados);
-});
+})
+server.put('/v1/laika/cliente/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerClientes.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
 server.delete('/v1/laika/cliente/:id', cors(), async function(request,response){
     let dados = await controllerClientes.setExcluir(request.params.id)
 
@@ -68,7 +76,14 @@ server.post('/v1/laika/funcionario', cors(), bodyParserJSON, async function(requ
     response.status(dados.status_code);
     response.json(dados);
 });
+server.put('/v1/laika/funcionario/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
 
+    let result = await controllerFuncionarios.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
 server.delete('/v1/laika/funcionario/:id', cors(), async function(request,response){
     let dados = await controllerFuncionarios.setExcluir(request.params.id)
 
@@ -216,6 +231,16 @@ server.delete('/v1/laika/endereco/:id', cors(), async function(request,response)
 //-----------------------------------------------------------------CARGO-----------------------------------------------------------------------//
 
 const controllerCargos = require('./controller/controller_cargo.js')
+server.get('/v1/laika/cargos', cors(), async function(request, response,){
+    let dados = await controllerCargos.getAll();
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/cargo/:id', cors(), async function(request, response,){
+    let dados = await controllerCargos.getId(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
 server.post('/v1/laika/cargo', cors(), bodyParserJSON,async function(request,response){
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
@@ -233,28 +258,57 @@ server.put('/v1/laika/cargo/:id', cors(), bodyParserJSON,async function(request,
     response.status(result.status_code)
     response.json(result)
 })
-
-
-server.get('/v1/laika/cargos', cors(), async function(request, response,){
-    let dados = await controllerCargos.getAll();
-    response.status(dados.status_code)
-    response.json(dados)
-})
-server.get('/v1/laika/cargo/:id', cors(), async function(request, response,){
-    let dados = await controllerCargos.getId(request.params.id);
-    response.status(dados.status_code)
-    response.json(dados)
-})
-
 server.delete('/v1/laika/cargo/:id', cors(), async function(request,response){
     let dados = await controllerCargos.setExcluir(request.params.id)
 
     response.status(dados.status_code)
-    response.json(dados)
-})
+    response.json(dados)})
+//-----------------------------------------------------------------ANIMAIS-----------------------------------------------------------------------//
+
+const controllerAnimais = require('./controller/controller_animais.js')
 
 
+server.get('/v1/laika/animais', async (req, res) => {
+    let result = await controllerAnimais.getAllAnimais();
+    res.status(result.status_code).json(result);
+});
 
+
+server.get('/v1/laika/animal/:id', async (req, res) => {
+    let id = req.params.id;
+    let result = await controllerAnimais.getAnimalById(id);
+    res.status(result.status_code).json(result);
+});
+
+server.get('/v1/laika/animais/cliente/:clienteId', async (req, res) => {
+    let clienteId = req.params.clienteId;
+    let result = await controllerAnimais.getAnimaisByClienteId(clienteId);
+    res.status(result.status_code).json(result);
+});
+
+
+server.get('/v1/laika/portes', async (req, res) => {
+    let result = await controllerAnimais.getPortes();
+    res.status(result.status_code).json(result);
+});
+
+
+server.get('/v1/laika/tipos', async (req, res) => {
+    let result = await controllerAnimais.getTipos();
+    res.status(result.status_code).json(result);
+});
+
+
+server.get('/v1/laika/racas', async (req, res) => {
+    let result = await controllerAnimais.getRacas();
+    res.status(result.status_code).json(result);
+});
+
+server.get('/v1/laika/racas/tipo/:tipoId', async (req, res) => {
+    let tipoId = req.params.tipoId;
+    let result = await controllerAnimais.getRacasByTipoId(tipoId);
+    res.status(result.status_code).json(result);
+});
 
 var port = process.env.PORT || 8080
 server.listen(port,function(){

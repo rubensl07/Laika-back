@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 var tabela = "tbl_endereco"
 var tabelaClientes = "tbl_clientes"
 var tabelaFuncionarios = "tbl_funcionarios"
-var tabelaFornecedores = "tbl_fornecedores"
 
 
 
@@ -74,9 +73,10 @@ const update = async function (id, dados) {
                 bairro = '${dados.bairro}',
                 cidade = '${dados.cidade}',
                 estado = '${dados.estado}',
-                complemento = ${dados.complemento}
+                complemento = '${dados.complemento}'
             WHERE id = ${id}
         `
+        console.log(sql);
         result = await prisma.$executeRawUnsafe(sql)
         } else {
             sql = `
@@ -88,9 +88,9 @@ const update = async function (id, dados) {
                 estado = '${dados.estado}'
             WHERE id = ${id}
         `
+        console.log(sql);
         result = await prisma.$executeRawUnsafe(sql)
         }
-        console.log(sql);
         if(result) {
             return true
         } else {
@@ -106,12 +106,10 @@ const deletar = async function (id) {
     try {
         const sqlClientes = `UPDATE ${tabelaClientes} SET endereco_id = null WHERE endereco_id = ${id}` 
         const sqlFuncionarios = `UPDATE ${tabelaFuncionarios} SET endereco_id = null WHERE endereco_id = ${id}` 
-        const sqlFornecedores = `UPDATE ${tabelaFornecedores} SET endereco_id = null WHERE endereco_id = ${id}` 
         const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
 
         await prisma.$executeRawUnsafe(sqlClientes)
         await prisma.$executeRawUnsafe(sqlFuncionarios)
-        await prisma.$executeRawUnsafe(sqlFornecedores)
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true

@@ -13,19 +13,29 @@ CREATE TABLE tbl_endereco (
     estado CHAR(2) NOT NULL,
     complemento VARCHAR(100)
 );
+INSERT INTO tbl_endereco (rua, bairro, cidade, estado, complemento) VALUES 
+('Rua Exemplo', 'Bairro Exemplo', 'Cidade Exemplo', 'EX', 'Complemento Exemplo'),
+('Rua ABC', 'Bairro ABC', 'Cidade ABC', 'AB', 'Complemento ABC'),
+('Rua Exemplo2', 'Bairro Exemplo', 'Cidade Exemplo', 'EX', 'Complemento Exemplo'),
+('Rua Exemplo3', 'Bairro Exemplo', 'Cidade Exemplo', 'EX', 'Complemento Exemplo')
+;
+SET @endereco_id = LAST_INSERT_ID();
 
 
 -- Create tbl_clientes
 CREATE TABLE tbl_clientes (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(15),
+    telefone VARCHAR(11),
     email VARCHAR(100) NOT NULL,
     senha VARCHAR(255) NOT NULL,
-    img VARCHAR(100),
+    img VARCHAR(200),
 	endereco_id INT,
     FOREIGN KEY (endereco_id) REFERENCES tbl_endereco(id)
 );
+INSERT INTO tbl_clientes (nome, telefone, email, senha, endereco_id, img) VALUES 
+('Nome do Cliente', '1234567890', 'cliente@exemplo.com', 'senha_hash', @endereco_id, 'imagem.jpg'),
+('Nome do Cliente2', '1234567890', 'cliente@exemplo.com', 'senha_hash', @endereco_id, 'imagem.jpg');
 
 -- Create tbl_produtos
 CREATE TABLE tbl_produtos (
@@ -33,11 +43,9 @@ CREATE TABLE tbl_produtos (
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     preco DECIMAL(10, 2) NOT NULL,
-    img VARCHAR(100),
+    img VARCHAR(200),
     quantidade_estoque INT NOT NULL
 );
-
-SELECT * FROM tbl_produtos;
 
 -- Create tbl_avaliacoes
 CREATE TABLE tbl_avaliacoes (
@@ -49,25 +57,6 @@ CREATE TABLE tbl_avaliacoes (
     produto_id INT NOT NULL,
     FOREIGN KEY (cliente_id) REFERENCES tbl_clientes(id),
     FOREIGN KEY (produto_id) REFERENCES tbl_produtos(id)
-);
-
--- Create tbl_fornecedores
-CREATE TABLE tbl_fornecedores (
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(15),
-    email VARCHAR(100),
-    endereco_id INT,
-    FOREIGN KEY (endereco_id) REFERENCES tbl_endereco(id)
-);
-
--- Create tbl_produtos_fornecedores
-CREATE TABLE tbl_produtos_fornecedores(
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    produto_id INT NOT NULL,
-    fornecedor_id INT NOT NULL,
-    FOREIGN KEY (produto_id) REFERENCES tbl_produtos(id),
-    FOREIGN KEY (fornecedor_id) REFERENCES tbl_fornecedores(id)
 );
 
 -- Create tbl_categorias
@@ -124,23 +113,46 @@ CREATE TABLE tbl_pagamentos (
     FOREIGN KEY (pedido_id) REFERENCES tbl_pedidos(id)
 );
 -----------------------------------------------------------------------------------------------
--- Create tbl_animal_raca
-CREATE TABLE tbl_animal_raca (
-    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    nome VARCHAR(50) NOT NULL
-);
-
 -- Create tbl_animal_tipo
 CREATE TABLE tbl_animal_tipo (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    nome VARCHAR(50) NOT NULL,
+    icon VARCHAR(200) NOT NULL
+);
+INSERT INTO tbl_animal_tipo (nome,icon) VALUES 
+("Cachorro","https://holidaycambriancoast.co.uk/wp-content/uploads/2017/11/dog-icon.png"),
+("Gato","https://static-00.iconduck.com/assets.00/cat-icon-449x512-h6yiv3wo.png"),
+("Tartaruga","https://cdn-icons-png.freepik.com/512/84/84024.png"),
+("Pássaro","https://cdn3.iconfinder.com/data/icons/nature-animals/512/Bird-512.png");
+
+-- Create tbl_animal_raca
+CREATE TABLE tbl_animal_raca (
+    id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    tipo_id INT NOT NULL,
+	FOREIGN KEY (tipo_id) REFERENCES tbl_animal_tipo(id),
     nome VARCHAR(50) NOT NULL
 );
+INSERT INTO tbl_animal_raca (tipo_id, nome) VALUES 
+(1, "SRD"),
+(2, "SRD"),
+(3, "SRD"),
+(4, "SRD"),
+(1,"Labrador"),
+(1,"Pincher"),
+(1,"Salsicha"),
+(2,"Siamês"),
+(2,"Persa"),
+(2,"Inglês");
 
 -- Create tbl_animal_porte
 CREATE TABLE tbl_animal_porte (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(50) NOT NULL
 );
+INSERT INTO tbl_animal_porte (nome) VALUES 
+("Pequeno"),
+("Médio"),
+("Grande");
 
 -- Create tbl_animais
 CREATE TABLE tbl_animais (
@@ -148,16 +160,19 @@ CREATE TABLE tbl_animais (
     nome VARCHAR(100) NOT NULL,
     nascimento DATE,
     peso DECIMAL(10, 2),
-    img VARCHAR(100),
+    img VARCHAR(200),
 	cliente_id INT NOT NULL,
-    tipo_id INT NOT NULL,
     porte_id INT NOT NULL,
 	raca_id INT NOT NULL,
     FOREIGN KEY (cliente_id) REFERENCES tbl_clientes(id),
-    FOREIGN KEY (tipo_id) REFERENCES tbl_animal_tipo(id),
     FOREIGN KEY (porte_id) REFERENCES tbl_animal_porte(id),
     FOREIGN KEY (raca_id) REFERENCES tbl_animal_raca(id)
 );
+select * from tbl_clientes;
+INSERT INTO tbl_animais (nome,nascimento,peso,cliente_id,porte_id,raca_id) VALUES 
+("Paçoca","2014-10-15",20,1,1,7),
+("Gigi","2010-02-10",10,2,1,9);
+
 
 -- Create tbl_agendamentos
 CREATE TABLE tbl_agendamentos (
@@ -174,6 +189,10 @@ CREATE TABLE tbl_servicos (
     descricao TEXT,
     preco DECIMAL(10, 2) NOT NULL
 );
+INSERT INTO tbl_servicos (nome,descricao,preco) VALUES 
+("Banho", "Dê banho no seu bichinho", "30"),
+("Tosa", "Dê uma tosa no seu bichinho", "40")
+;
 
 -- Create tbl_agendamentos_servicos
 CREATE TABLE tbl_agendamentos_servicos (
@@ -189,17 +208,31 @@ CREATE TABLE tbl_cargos (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(50) NOT NULL
 );
+INSERT INTO tbl_cargos (nome) VALUES 
+("Veterinário"),
+("Tosador"),
+("Atendente"),
+("Estoquista")
+;
+
+
 
 -- Create tbl_profissionais
 CREATE TABLE tbl_funcionarios (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(15),
-    email VARCHAR(100),
-	senha VARCHAR(100),
-	endereco_id INT,
+    telefone VARCHAR(11) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+	senha VARCHAR(100) NOT NULL,
+	endereco_id INT NOT NULL,
     FOREIGN KEY (endereco_id) REFERENCES tbl_endereco(id)
 );
+INSERT INTO tbl_funcionarios (nome,telefone,email,senha,endereco_id) VALUES 
+("Letícia",1111111,"Leticia@",123,1),
+("Matheus",1111111,"Matheus@",123,2),
+("Inocente",1111111,"Leticia@",123,3),
+("Rubens",1111111,"Matheus@",123,4)
+;
 
 CREATE TABLE tbl_cargos_funcionarios (
 id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -208,6 +241,12 @@ funcionario_id INT NOT NULL,
 FOREIGN KEY (cargo_id) REFERENCES tbl_cargos(id),
 FOREIGN KEY (funcionario_id) REFERENCES tbl_funcionarios(id)
 );
+INSERT INTO tbl_cargos_funcionarios (cargo_id,funcionario_id) VALUES 
+(1,1),
+(2,2),
+(3,3),
+(4,4)
+;
 
 -- Create tbl_agendamento_profissionais
 CREATE TABLE tbl_agendamento_funcionarios (
@@ -220,21 +259,24 @@ CREATE TABLE tbl_agendamento_funcionarios (
 
 
 show tables;
-INSERT INTO tbl_endereco (rua, bairro, cidade, estado, complemento) VALUES 
-('Rua Exemplo', 'Bairro Exemplo', 'Cidade Exemplo', 'EX', 'Complemento Exemplo')
-;
 
--- Obter o ID do endereço recém-adicionado
-SET @endereco_id = LAST_INSERT_ID();
-select @endereco_id;
-show tables;
--- Inserir um cliente usando o ID do endereço
-INSERT INTO tbl_clientes (nome, telefone, email, senha, endereco_id, img) VALUES 
-('Nome do Cliente', '1234567890', 'cliente@exemplo.com', 'senha_hash', @endereco_id, 'imagem.jpg')
-;
-INSERT INTO tbl_funcionarios (nome, telefone, email, senha, endereco_id) VALUES 
-('Nome do Funcionário', '1234567890', 'funcionário@exemplo.com', 'senha_hash', @endereco_id)
-;
+
+
+
 
 
 SELECT cast(LAST_INSERT_ID() AS DECIMAL) AS id FROM TBL_ENDERECO LIMIT 1;
+describe tbl_clientes;
+describe tbl_funcionarios;
+describe tbl_endereco;
+show tables;
+select tbl_funcionarios.nome, tbl_endereco.rua,tbl_endereco.bairro,tbl_endereco.cidade,tbl_endereco.estado,tbl_endereco.complemento from tbl_funcionarios join tbl_endereco on endereco_id = tbl_endereco.id where tbl_funcionarios.id = 9;
+select * from tbl_endereco;
+select * from tbl_clientes;
+select * from tbl_clientes;
+select tbl_animais.id,tbl_animais.nome,nascimento,peso,tbl_animais.img,tipo_id,porte_id, raca_id from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id;
+describe tbl_animal_raca;
+show tables;
+select tbl_animais.id,tbl_animais.nome,nascimento,peso,tbl_animais.img,tipo_id,porte_id, raca_id from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id;
+
+update tbl_clientes set email = 'sla@' where id =1;

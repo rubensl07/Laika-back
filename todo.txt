@@ -1,0 +1,20 @@
+REQUISITOS
+-- Controle de estoque
+   -- CRUD de produtos (Funcionários)
+   -- Alerta de baixo nível de estoque
+-- AGENDAMENTO DE SERVIÇOS
+    -- Realizar agendamentos (Clientes)
+    -- CRUD de serviços (Funcionários)
+-- ACOMPANHAMENTO DE CONSULTAS VETERINÁRIAS
+    -- Realizar consultas (Clientes)
+    -- GET das consultas (funcionários/veterinários)
+-- GERENCIAMENTO DE CLIENTES E ANIMAIS DE ESTIMAÇÃO
+    -- Associar um animal ao cliente
+    -- Editar o próprio perfil (cliente)
+    -- Editar o perfil dos clientes e removê-los (funcionário)
+
+OPCIONAIS 
+
+EXTRAS
+- vários arquivos de endpoints
+- sistema de pontos
