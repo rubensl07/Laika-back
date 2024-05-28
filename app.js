@@ -269,46 +269,90 @@ const controllerAnimais = require('./controller/controller_animais.js')
 
 
 server.get('/v1/laika/animais', async (req, res) => {
-    let result = await controllerAnimais.getAllAnimais();
+    let result = await controllerAnimais.getAll();
     res.status(result.status_code).json(result);
 });
 
 
 server.get('/v1/laika/animal/:id', async (req, res) => {
-    let id = req.params.id;
-    let result = await controllerAnimais.getAnimalById(id);
+    let result = await controllerAnimais.getById(req.params.id);
     res.status(result.status_code).json(result);
 });
 
-server.get('/v1/laika/animais/cliente/:clienteId', async (req, res) => {
-    let clienteId = req.params.clienteId;
-    let result = await controllerAnimais.getAnimaisByClienteId(clienteId);
+server.get('/v1/laika/animais/cliente/:id', async (req, res) => {
+    let result = await controllerAnimais.getByClienteId(req.params.id);
     res.status(result.status_code).json(result);
 });
+server.post('/v1/laika/animal', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let newCargo = await controllerAnimais.setInserir(dadosBody, contentType);
+
+    response.status(newCargo.status_code);
+    response.json(newCargo);
+});
+server.put('/v1/laika/animal/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerAnimais.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
+server.delete('/v1/laika/animal/:id', cors(), async function(request,response){
+    let dados = await controllerAnimais.setExcluir(request.params.id)
+
+    response.status(dados.status_code)
+    response.json(dados)})
+
+
+//-----------------------------------------------------------------PORTES-----------------------------------------------------------------------//
+const controllerPortes = require('./controller/controller_portes.js')
 
 
 server.get('/v1/laika/portes', async (req, res) => {
-    let result = await controllerAnimais.getPortes();
+    let result = await controllerPortes.getAll();
+    res.status(result.status_code).json(result);
+});
+server.get('/v1/laika/porte/:id', async (req, res) => {
+    let result = await controllerPortes.getId(req.params.id);
     res.status(result.status_code).json(result);
 });
 
+//-----------------------------------------------------------------TIPOS-----------------------------------------------------------------------//
+const controllerTipos = require('./controller/controller_tipos.js')
 
 server.get('/v1/laika/tipos', async (req, res) => {
-    let result = await controllerAnimais.getTipos();
+    let result = await controllerTipos.getAll();
+    res.status(result.status_code).json(result);
+});
+server.get('/v1/laika/tipo/:id', async (req, res) => {
+    let result = await controllerTipos.getId(req.params.id);
     res.status(result.status_code).json(result);
 });
 
+//-----------------------------------------------------------------RAÇAS-----------------------------------------------------------------------//
+const controllerRacas = require('./controller/controller_racas.js')
 
 server.get('/v1/laika/racas', async (req, res) => {
-    let result = await controllerAnimais.getRacas();
+    let result = await controllerRacas.getAll();
+    res.status(result.status_code).json(result);
+});
+
+server.get('/v1/laika/raca/:id', async (req, res) => {
+    let result = await controllerRacas.getId(req.params.id);
     res.status(result.status_code).json(result);
 });
 
 server.get('/v1/laika/racas/tipo/:tipoId', async (req, res) => {
-    let tipoId = req.params.tipoId;
-    let result = await controllerAnimais.getRacasByTipoId(tipoId);
+    let result = await controllerRacas.getByTipoId(req.params.tipoId);
     res.status(result.status_code).json(result);
 });
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------Inicialização do servidor-----------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------//
 
 var port = process.env.PORT || 8080
 server.listen(port,function(){

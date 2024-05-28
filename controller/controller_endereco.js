@@ -35,7 +35,6 @@ const getId = async function (id) {
         } else {
             return message.ERROR_INTERNAL_SERVER_DB //500
         }
-
     }
 }
 const setInserir = async function (dados, contentType) {
