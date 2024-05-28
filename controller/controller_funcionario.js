@@ -33,6 +33,39 @@ const getAll = async function () {
         return message.ERROR_INTERNAL_SERVER_DB //500
     }
 }
+
+const getAllVeterinarios = async function () {
+    let json = {};
+    let dados = await DAO.selectAllVeterinarios();
+        if (dados) {
+        if(dados.length > 0) {
+            for (let index = 0; index < dados.length; index++) {
+                if(dados[index].endereco_id){
+                    const endereco = await enderecosDAO.selectById(dados[index].endereco_id)
+                    const novoEndereco = {}
+                    novoEndereco.rua = endereco[0].rua
+                    novoEndereco.bairro = endereco[0].bairro
+                    novoEndereco.cidade = endereco[0].cidade
+                    novoEndereco.estado = endereco[0].estado
+                    if(endereco[0].complemento){
+                        novoEndereco.complemento = endereco[0].complemento
+                    }
+                    dados[index].endereco = novoEndereco
+                }
+                delete dados[index].endereco_id
+            }
+            json.dados = dados;
+            json.quantidade = dados.length;
+            json.status_code = 200;
+            return json;
+        } else {
+            return message.ERROR_NOT_FOUND //404
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB //500
+    }
+}
+
 const getId = async function (id) {
     let json = {};
     if (id == '' || id == undefined || isNaN(id)) {
@@ -180,10 +213,12 @@ const setExcluir = async function (id) {
         return message.ERROR_NOT_FOUND //404
     }
 }
+
 module.exports = {
     setInserir,
     setAtualizar,
     setExcluir,
     getAll,
-    getId
+    getId,
+    getAllVeterinarios
 };

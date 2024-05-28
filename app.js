@@ -90,7 +90,12 @@ server.delete('/v1/laika/funcionario/:id', cors(), async function(request,respon
     response.status(dados.status_code)
     response.json(dados)
 })
-
+//---------------------------------------------------------VETERINÁRIOS-----------------------------------------------------------------------//
+server.get('/v1/laika/veterinarios', cors(), async function(request, response,){
+    let dados = await controllerFuncionarios.getAllVeterinarios();
+    response.status(dados.status_code)
+    response.json(dados)
+})
 //------------------------------------------------------------PRODUTOS-----------------------------------------------------------------------//
 const controllerProdutos = require('./controller/controller_produtos.js')
 
@@ -348,6 +353,45 @@ server.get('/v1/laika/raca/:id', async (req, res) => {
 server.get('/v1/laika/racas/tipo/:tipoId', async (req, res) => {
     let result = await controllerRacas.getByTipoId(req.params.tipoId);
     res.status(result.status_code).json(result);
+});
+
+//-----------------------------------------------------------------AGENDAMENTOS-----------------------------------------------------------------------//
+const controllerAgendamentos = require('./controller/controller_agendamentos.js')
+
+server.get('/v1/laika/agendamentos', cors(), async function(request, response) {
+    let dados = await controllerAgendamentos.getAll();
+    response.status(dados.status_code);
+    response.json(dados);
+});
+
+server.get('/v1/laika/agendamento/:id', cors(), async function(request, response) {
+    let dados = await controllerAgendamentos.getById(request.params.id);
+    response.status(dados.status_code);
+    response.json(dados);
+});
+
+server.post('/v1/laika/agendamento', cors(), bodyParserJSON, async function(request, response) {
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerAgendamentos.setInserir(dadosBody, contentType);
+    response.status(result.status_code);
+    response.json(result);
+});
+
+server.put('/v1/laika/agendamento/:id', cors(), bodyParserJSON, async function(request, response) {
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerAgendamentos.setAtualizar(request.params.id, dadosBody, contentType);
+    response.status(result.status_code);
+    response.json(result);
+});
+
+server.delete('/v1/laika/agendamento/:id', cors(), async function(request, response) {
+    let dados = await controllerAgendamentos.setExcluir(request.params.id);
+    response.status(dados.status_code);
+    response.json(dados);
 });
 
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------//

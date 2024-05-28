@@ -94,6 +94,16 @@ const pegarUltimoId = async function() {
         return false    
     }
 }
+const selectAllVeterinarios = async function (){
+    try {
+        const sql = `select ${tabela}.id,${tabela}.nome from ${tabela} join tbl_cargos_funcionarios on ${tabela}.id = tbl_cargos_funcionarios.funcionario_id where cargo_id = 1`
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
 
 
 
@@ -104,4 +114,5 @@ module.exports= {
     pegarUltimoId,
     selectAll,
     selectById,
+    selectAllVeterinarios
 }
