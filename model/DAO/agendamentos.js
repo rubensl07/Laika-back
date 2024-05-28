@@ -45,9 +45,13 @@ const insertAgendamentoFuncionarios = async function (dados) {
     try {
 
         let sql = `INSERT INTO ${tabelaAgendamentoFuncionarios} (agendamento_id, funcionario_id) VALUES (?, ?);`;
+        console.log(sql);
         let result = await prisma.$executeRawUnsafe(sql,
             dados.idAgendamento,
              dados.idFuncionario);
+             console.log(result);
+             
+             
         return result ? true : false;
     } catch (error) {
         console.error(error);

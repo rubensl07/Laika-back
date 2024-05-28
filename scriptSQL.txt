@@ -270,7 +270,8 @@ CREATE TABLE tbl_agendamento_funcionario (
 show tables;
 
 select * from tbl_agendamento_funcionario;
-select * from tbl_agendamentos;
+
+select * from tbl_agendamentos join tbl_agendamento_funcionario on tbl_agendamento_funcionario.agendamento_id = tbl_agendamentos.id;
 
 insert into tbl_agendamento_funcionario (agendamento_id, funcionario_id) VALUES (1,1);
 

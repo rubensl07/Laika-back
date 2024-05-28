@@ -24,15 +24,11 @@ const setInserir = async function (dados, contentType) {
                             DAO.insertAgendamentoFuncionarios(json)
                         });
                     }
-                    
-                    for (let funcionarioId of dados.funcionarios) {
-                        await DAO.insertAgendamentoFuncionarios({ funcionario_id: funcionarioId, agendamento_id: idAgendamento });
-                    }
 
                     // Inserir os serviços
-                    for (let servicoId of dados.servicos) {
-                        await DAO.insertAgendamentoServicos({ agendamento_id: idAgendamento, servico_id: servicoId });
-                    }
+                    // for (let servicoId of dados.servicos) {
+                    //     await DAO.insertAgendamentoServicos({ agendamento_id: idAgendamento, servico_id: servicoId });
+                    // }
 
                     json.dados = dados;
                     json.status = message.SUCCESS_CREATED_ITEM.status;
