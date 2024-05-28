@@ -1,6 +1,8 @@
 const message = require('../modulo/config.js')
-const enderecosDAO = require('../model/DAO/endereco.js');
 const DAO = require('../model/DAO/cliente.js')
+const enderecosDAO = require('../model/DAO/endereco.js');
+const animalDAO = require('../model/DAO/animal.js')
+
 
 
 const getAll = async function () {
@@ -22,6 +24,10 @@ const getAll = async function () {
                     dados[index].endereco = novoEndereco
                 }
                 delete dados[index].endereco_id
+                let listaAnimais = await animalDAO.selectByClienteId(index)
+                if(listaAnimais.length>0){
+                    dados[index].animais = listaAnimais
+                }
             }
             json.dados = dados;
             json.quantidade = dados.length
@@ -55,7 +61,11 @@ const getId = async function (id) {
                     dados[0].endereco = novoEndereco
                 }
                 delete dados[0].endereco_id
-
+                let listaAnimais = await animalDAO.selectByClienteId(id)
+                if(listaAnimais.length>0){
+                    dados[0].animais = listaAnimais
+                }
+                
                 json.dados = dados[0]
                 json.status_code = 200
                 return json

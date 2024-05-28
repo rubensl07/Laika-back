@@ -92,27 +92,27 @@ const selectById = async function (id) {
         return false;
     }
 }
-const selectByIdCliente = async function (clienteId) {
-    try {
-        const sql = `
-            SELECT 
-                a.id, a.nome, a.nascimento, a.peso, a.img, a.cliente_id,
-                p.nome AS porte, 
-                r.nome AS raca, 
-                t.nome AS tipo 
-            FROM ${tabela} a
-            JOIN ${tabelaPortes} p ON a.porte_id = p.id
-            JOIN ${tabelaRacas} r ON a.raca_id = r.id
-            JOIN ${tabelaTipos} t ON r.tipo_id = t.id
-            WHERE a.cliente_id = ${clienteId};
-        `;
-        let result = await prisma.$queryRawUnsafe(sql);
-        return result;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
-}
+// const selectByIdCliente = async function (clienteId) {
+//     try {
+//         const sql = `
+//             SELECT 
+//                 a.id, a.nome, a.nascimento, a.peso, a.img, a.cliente_id,
+//                 p.nome AS porte, 
+//                 r.nome AS raca, 
+//                 t.nome AS tipo 
+//             FROM ${tabela} a
+//             JOIN ${tabelaPortes} p ON a.porte_id = p.id
+//             JOIN ${tabelaRacas} r ON a.raca_id = r.id
+//             JOIN ${tabelaTipos} t ON r.tipo_id = t.id
+//             WHERE a.cliente_id = ${clienteId};
+//         `;
+//         let result = await prisma.$queryRawUnsafe(sql);
+//         return result;
+//     } catch (error) {
+//         console.error(error);
+//         return false;
+//     }
+// }
 
 // Selecionar animal por ID com detalhes completos
 // const selectById = async function (id) {
@@ -174,11 +174,22 @@ const deletar = async function (id) {
     }
 }
 
+const selectByClienteId = async function (id) {
+    try {
+        const sql = `SELECT id,nome,img FROM ${tabela} WHERE cliente_id = ${id}`;
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
 module.exports = {
     pegarUltimoId,
     selectAll,
     selectById,
-    selectByIdCliente,
+    selectByClienteId,
     insert,
     update,
     deletar

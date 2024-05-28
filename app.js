@@ -268,7 +268,7 @@ server.delete('/v1/laika/cargo/:id', cors(), async function(request,response){
 const controllerAnimais = require('./controller/controller_animais.js')
 
 
-server.get('/v1/laika/animais', async (req, res) => {
+server.get('/v1/laika/animais', async (req, res) => {    
     let result = await controllerAnimais.getAll();
     res.status(result.status_code).json(result);
 });

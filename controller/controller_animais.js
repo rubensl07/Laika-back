@@ -16,7 +16,12 @@ const getAll = async function () {
         if (dados.length > 0) {
             for (let index = 0; index < dados.length; index++) {
                 const racaJSON = (await racasDAO.selectById(dados[index].raca_id))[0]
-                dados[index].dono = (await clientesDAO.selectById(dados[index].cliente_id))
+                const dadosCliente = (await clientesDAO.selectById(dados[index].cliente_id))[0]
+                delete dadosCliente.telefone
+                delete dadosCliente.email
+                delete dadosCliente.senha
+                delete dadosCliente.endereco_id
+                dados[index].dono = dadosCliente
                 delete dados[index].cliente_id
                 dados[index].tipo = (await tiposDAO.selectById(racaJSON.tipo_id))[0]
                 delete racaJSON.tipo_id
@@ -26,6 +31,7 @@ const getAll = async function () {
                     delete racaJSON.srd
                     dados[index].raca = racaJSON
                 }
+                
                 delete dados[index].raca_id
                 dados[index].porte = (await portesDAO.selectById(dados[index].porte_id))[0]
                 delete dados[index].porte_id
@@ -49,7 +55,12 @@ const getById = async function (id) {
     if (dados) {
         if (dados.length > 0) {
             const racaJSON = (await racasDAO.selectById(dados[0].raca_id))[0]
-            dados[0].dono = (await clientesDAO.selectById(dados[0].cliente_id))
+            const dadosCliente = (await clientesDAO.selectById(dados[0].cliente_id))[0]
+            delete dadosCliente.telefone
+            delete dadosCliente.email
+            delete dadosCliente.senha
+            delete dadosCliente.endereco_id
+            dados[0].dono = dadosCliente
             delete dados[0].cliente_id
             dados[0].tipo = (await tiposDAO.selectById(racaJSON.tipo_id))[0]
             delete racaJSON.tipo_id
