@@ -120,10 +120,12 @@ CREATE TABLE tbl_animal_tipo (
     icon VARCHAR(200) NOT NULL
 );
 INSERT INTO tbl_animal_tipo (nome,icon) VALUES 
-("Cachorro","https://holidaycambriancoast.co.uk/wp-content/uploads/2017/11/dog-icon.png"),
-("Gato","https://static-00.iconduck.com/assets.00/cat-icon-449x512-h6yiv3wo.png"),
-("Tartaruga","https://cdn-icons-png.freepik.com/512/84/84024.png"),
-("Pássaro","https://cdn3.iconfinder.com/data/icons/nature-animals/512/Bird-512.png");
+("Cachorro","https://cdn-icons-png.flaticon.com/128/2924/2924299.png"),
+("Gato","https://cdn-icons-png.flaticon.com/128/7577/7577239.png"),
+("Tartaruga","https://cdn-icons-png.flaticon.com/128/3077/3077421.png"),
+("Pássaro","https://cdn-icons-png.flaticon.com/128/92/92022.png"),
+("Cobra","https://cdn-icons-png.flaticon.com/128/8616/8616077.png"),
+("Hamster","https://cdn-icons-png.flaticon.com/128/84/84419.png");
 
 -- Create tbl_animal_raca
 CREATE TABLE tbl_animal_raca (
@@ -133,11 +135,14 @@ CREATE TABLE tbl_animal_raca (
 	FOREIGN KEY (tipo_id) REFERENCES tbl_animal_tipo(id),
     nome VARCHAR(50) NOT NULL
 );
+describe tbl_animal_raca;
 INSERT INTO tbl_animal_raca (tipo_id, nome, srd) VALUES 
-(1, "Cachorro SRD", true),
-(2, "Gato SRD", true),
-(3, "Tartaruga SRD", true),
-(4, "Pássaro SRD", true);
+(1, "Cachorro", true),
+(2, "Gato", true),
+(3, "Tartaruga", true),
+(4, "Pássaro", true),
+(5, "Cobra", true),
+(6, "Hamster", true);
 INSERT INTO tbl_animal_raca (tipo_id, nome) VALUES 
 (1,"Labrador"),
 (1,"Pincher"),
@@ -145,7 +150,6 @@ INSERT INTO tbl_animal_raca (tipo_id, nome) VALUES
 (2,"Siamês"),
 (2,"Persa"),
 (2,"Inglês");
-
 -- Create tbl_animal_porte
 CREATE TABLE tbl_animal_porte (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -174,7 +178,7 @@ select * from tbl_clientes;
 INSERT INTO tbl_animais (nome,nascimento,peso,cliente_id,porte_id,raca_id) VALUES 
 ("Paçoca","2014-10-15",20,1,1,7),
 ("Gigi","2010-02-10",10,2,1,9),
-("Junior","2020-03-11",8,1,2,1);
+("Junior","2020-03-11",8,1,2,1)
 ;
 
 
@@ -281,6 +285,7 @@ select * from tbl_clientes;
 select tbl_animais.id,tbl_animais.nome,nascimento,peso,tbl_animais.img,tipo_id,porte_id, raca_id from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id;
 describe tbl_animal_raca;
 show tables;
+describe tbl_animais;
 select * from tbl_animais;
 select tbl_clientes.nome as Dono, tbl_animais.nome,nascimento,peso,tbl_animal_porte.nome as porte, tbl_animal_raca.nome as raca from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id join tbl_animal_raca on raca_id = tbl_animal_raca.id join tbl_animal_porte on porte_id = tbl_animal_porte.id;
 select * from tbl_animal_raca;
