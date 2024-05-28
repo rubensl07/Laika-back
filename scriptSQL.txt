@@ -34,7 +34,7 @@ CREATE TABLE tbl_clientes (
     FOREIGN KEY (endereco_id) REFERENCES tbl_endereco(id)
 );
 INSERT INTO tbl_clientes (nome, telefone, email, senha, endereco_id, img) VALUES 
-('Nome do Cliente', '1234567890', 'cliente@exemplo.com', 'senha_hash', @endereco_id, 'imagem.jpg'),
+('Fernando Leonid', '1234567890', 'cliente@exemplo.com', 'senha_hash', @endereco_id, 'imagem.jpg'),
 ('Nome do Cliente2', '1234567890', 'cliente@exemplo.com', 'senha_hash', @endereco_id, 'imagem.jpg');
 
 -- Create tbl_produtos
@@ -189,7 +189,8 @@ CREATE TABLE tbl_agendamentos (
 	animal_id INT NOT NULL,
     FOREIGN KEY (animal_id) REFERENCES tbl_animais(id)
 );
-
+insert into tbl_agendamentos (data_agendamento, animal_id) VALUES ('2020-02-10',2);
+show tables;
 -- Create tbl_servicos
 CREATE TABLE tbl_servicos (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -202,8 +203,8 @@ INSERT INTO tbl_servicos (nome,descricao,preco) VALUES
 ("Tosa", "Dê uma tosa no seu bichinho", "40")
 ;
 
--- Create tbl_agendamentos_servicos
-CREATE TABLE tbl_agendamentos_servicos (
+-- Create tbl_agendamento_servico
+CREATE TABLE tbl_agendamento_servico (
     id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     agendamento_id INT NOT NULL,
     servico_id INT NOT NULL,
@@ -257,7 +258,7 @@ INSERT INTO tbl_cargos_funcionarios (cargo_id,funcionario_id) VALUES
 ;
 
 -- Create tbl_agendamento_profissionais
-CREATE TABLE tbl_agendamento_funcionarios (
+CREATE TABLE tbl_agendamento_funcionario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     funcionario_id INT NOT NULL,
     agendamento_id INT NOT NULL,
@@ -268,7 +269,10 @@ CREATE TABLE tbl_agendamento_funcionarios (
 
 show tables;
 
+select * from tbl_agendamento_funcionario;
+select * from tbl_agendamentos;
 
+insert into tbl_agendamento_funcionario (agendamento_id, funcionario_id) VALUES (1,1);
 
 
 
@@ -290,5 +294,8 @@ select * from tbl_animais;
 select tbl_clientes.nome as Dono, tbl_animais.nome,nascimento,peso,tbl_animal_porte.nome as porte, tbl_animal_raca.nome as raca from tbl_animais join tbl_clientes on cliente_id = tbl_clientes.id join tbl_animal_raca on raca_id = tbl_animal_raca.id join tbl_animal_porte on porte_id = tbl_animal_porte.id;
 select * from tbl_animal_raca;
 SELECT * FROM tbl_animal_raca WHERE tipo_id = 1;
-
+select * from tbl_cargos;
+select * from tbl_cargos_funcionarios;
+show tables;
+select * from tbl_agendamento_funcionario;
 update tbl_clientes set email = 'sla@' where id =1;
