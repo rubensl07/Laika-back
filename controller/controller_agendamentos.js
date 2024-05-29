@@ -1,6 +1,10 @@
 const message = require('../modulo/config.js')
 const animalDAO = require('../model/DAO/animal.js')
+const servicosDAO = require('../model/DAO/servico.js')
+const funcionariosDAO = require('../model/DAO/funcionario.js')
+
 const DAO = require('../model/DAO/agendamentos.js')
+const { tratarData } = require('./funcoes.js')
 
 const setInserir = async function (dados, contentType) {
     try {
@@ -24,12 +28,15 @@ const setInserir = async function (dados, contentType) {
                             DAO.insertAgendamentoFuncionarios(json)
                         });
                     }
-
-                    // Inserir os serviços
-                    // for (let servicoId of dados.servicos) {
-                    //     await DAO.insertAgendamentoServicos({ agendamento_id: idAgendamento, servico_id: servicoId });
-                    // }
-
+                    if(dados.servicos){
+                        (dados.servicos).forEach(idServico => {
+                            const json ={
+                                idAgendamento,
+                                idServico
+                            }
+                            DAO.insertAgendamentoServicos(json)
+                        });
+                    }
                     json.dados = dados;
                     json.status = message.SUCCESS_CREATED_ITEM.status;
                     json.status_code = message.SUCCESS_CREATED_ITEM.status_code;
@@ -121,24 +128,37 @@ const getAll = async function () {
     if (dados) {
         if (dados.length > 0) {
             for (let index = 0; index < dados.length; index++) {
-                const infoAnimal = (await animalDAO.selectById(dados[index].animal_id))[0]                  
+                dados[index].data_agendamento = tratarData(dados[index].data_agendamento)
+                const infoAnimal = (await animalDAO.selectById(dados[index].animal_id))[0]  
+                delete dados[index].animal_id                  
                 delete infoAnimal.nascimento
                 delete infoAnimal.peso
                 delete infoAnimal.cliente_id
                 delete infoAnimal.porte_id
                 delete infoAnimal.raca_id
                 dados[index].animal = infoAnimal 
-                delete dados[index].animal_id  
-                delete dados[index].animal_id  
-
-                dados[index].servicos = []
-                console.log(dados)
-                dados[index].funcionarios = []
-
+                if(dados[index].funcionarios){
+                    const listaIdsFuncionarios = dados[index].funcionarios.split('-')
+                    let listaFuncionarios = []
+                    for (let idFuncionario of listaIdsFuncionarios) {
+                        const funcionario = (await funcionariosDAO.selectById(parseInt(idFuncionario)))[0];
+                        delete funcionario.email
+                        delete funcionario.senha
+                        delete funcionario.endereco_id
+                        listaFuncionarios.push(funcionario);
+                    }
+                    dados[index].funcionarios = listaFuncionarios
+                }
+                if(dados[index].servicos){
+                    const listaIdsServicos = dados[index].servicos.split('-')
+                    let listaServicos = []
+                    for (let idServico of listaIdsServicos) {
+                        listaServicos.push((await servicosDAO.selectById(parseInt(idServico)))[0]);
+                    }
+                    dados[index].servicos = listaServicos
+                }
             }
-
             json.dados = dados;
-            json.quantidade = dados.length;
             json.status_code = 200;
             return json;
         } else {
@@ -157,6 +177,35 @@ const getById = async function (id) {
         let dados = await DAO.selectById(id);
         if (dados) {
             if (dados.length > 0) {
+                dados[0].data_agendamento = tratarData(dados[0].data_agendamento)
+                const infoAnimal = (await animalDAO.selectById(dados[0].animal_id))[0]  
+                delete dados[0].animal_id                  
+                delete infoAnimal.nascimento
+                delete infoAnimal.peso
+                delete infoAnimal.cliente_id
+                delete infoAnimal.porte_id
+                delete infoAnimal.raca_id
+                dados[0].animal = infoAnimal 
+                if(dados[0].funcionarios){
+                    const listaIdsFuncionarios = dados[0].funcionarios.split('-')
+                    let listaFuncionarios = []
+                    for (let idFuncionario of listaIdsFuncionarios) {
+                        const funcionario = (await funcionariosDAO.selectById(parseInt(idFuncionario)))[0];
+                        delete funcionario.email
+                        delete funcionario.senha
+                        delete funcionario.endereco_id
+                        listaFuncionarios.push(funcionario);
+                    }
+                    dados[0].funcionarios = listaFuncionarios
+                }
+                if(dados[0].servicos){
+                    const listaIdsServicos = dados[0].servicos.split('-')
+                    let listaServicos = []
+                    for (let idServico of listaIdsServicos) {
+                        listaServicos.push((await servicosDAO.selectById(parseInt(idServico)))[0])
+                    }
+                    dados[0].servicos = listaServicos
+                }
                 json.dados = dados[0];
                 json.status_code = 200;
                 return json;

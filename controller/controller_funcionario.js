@@ -1,5 +1,6 @@
 const message = require('../modulo/config.js')
 const enderecosDAO = require('../model/DAO/endereco.js');
+const cargosDAO = require('../model/DAO/cargo.js');
 const DAO = require('../model/DAO/funcionario.js')
 
 const getAll = async function () {
@@ -21,6 +22,16 @@ const getAll = async function () {
                     dados[index].endereco = novoEndereco
                 }
                 delete dados[index].endereco_id
+                if(dados[index].cargos){
+                    const listaIdsCargos = dados[index].cargos.split('-')
+                    let listaCargos = []
+                    for(let idCargo of listaIdsCargos){
+                        listaCargos.push((await cargosDAO.selectById(parseInt(idCargo)))[0])
+                    }
+                    dados[index].cargos = listaCargos
+                } else {
+                    delete dados[index].cargos
+                }
             }
             json.dados = dados;
             json.quantidade = dados.length;
@@ -87,7 +98,16 @@ const getId = async function (id) {
                     dados[0].endereco = novoEndereco
                 }
                 delete dados[0].endereco_id
-
+                if(dados[0].cargos){
+                    const listaIdsCargos = dados[0].cargos.split('-')
+                    let listaCargos = []
+                    for(let idCargo of listaIdsCargos){
+                        listaCargos.push((await cargosDAO.selectById(parseInt(idCargo)))[0])
+                    }
+                    dados[0].cargos = listaCargos
+                } else {
+                    delete dados[0].cargos
+                }
                 json.dados = dados[0]
                 json.status_code = 200
                 return json

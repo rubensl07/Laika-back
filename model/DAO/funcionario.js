@@ -2,6 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 var tabela = "tbl_funcionarios"
+var tabelaCargos = "tbl_cargos"
+var tabelaCargosFuncionarios = "tbl_cargos_funcionarios"
 
 const insert = async function(dados){
     try {
@@ -62,7 +64,27 @@ const deletar = async function (id) {
 }
 const selectAll = async function (){
     try {
-        const sql = `SELECT * FROM ${tabela}`;
+        let sql = 
+        `SELECT 
+        f.id,
+        f.nome,
+        f.telefone,
+        f.email,
+        f.senha,
+        f.endereco_id,
+        (SELECT 
+            GROUP_CONCAT(c.id SEPARATOR '-') 
+         FROM 
+            ${tabelaCargos} c 
+         INNER JOIN 
+            ${tabelaCargos}_funcionarios cf 
+         ON 
+            c.id = cf.cargo_id 
+         WHERE 
+            cf.funcionario_id = f.id
+        ) AS cargos
+    FROM 
+        ${tabela} f`
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
@@ -72,7 +94,28 @@ const selectAll = async function (){
 }
 const selectById = async function (search) {
     try {
-        const sql = `select * FROM ${tabela} WHERE id = ${search}`;
+        const sql = 
+        `SELECT 
+        f.id,
+        f.nome,
+        f.telefone,
+        f.email,
+        f.senha,
+        f.endereco_id,
+        (SELECT 
+            GROUP_CONCAT(c.id SEPARATOR '-') 
+         FROM 
+            ${tabelaCargos} c 
+         INNER JOIN 
+            ${tabelaCargos}_funcionarios cf 
+         ON 
+            c.id = cf.cargo_id 
+         WHERE 
+            cf.funcionario_id = f.id
+        ) AS cargos
+    FROM 
+        ${tabela} f 
+        WHERE id = ${search}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result
     } catch (error) {
@@ -96,7 +139,7 @@ const pegarUltimoId = async function() {
 }
 const selectAllVeterinarios = async function (){
     try {
-        const sql = `select ${tabela}.id,${tabela}.nome from ${tabela} join tbl_cargos_funcionarios on ${tabela}.id = tbl_cargos_funcionarios.funcionario_id where cargo_id = 1`
+        const sql = `select ${tabela}.id,${tabela}.nome from ${tabela} join ${tabelaCargosFuncionarios} on ${tabela}.id = ${tabelaCargosFuncionarios}.funcionario_id where cargo_id = 1`
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
