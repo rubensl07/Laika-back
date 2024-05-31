@@ -157,4 +157,4 @@ module.exports = {
     setExcluir,
     getAll,
     getId
-}
+};

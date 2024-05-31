@@ -280,7 +280,7 @@ server.get('/v1/laika/animais', async (req, res) => {
 
 
 server.get('/v1/laika/animal/:id', async (req, res) => {
-    let result = await controllerAnimais.getById(req.params.id);
+    let result = await controllerAnimais.getId(req.params.id);
     res.status(result.status_code).json(result);
 });
 
@@ -365,7 +365,7 @@ server.get('/v1/laika/agendamentos', cors(), async function(request, response) {
 });
 
 server.get('/v1/laika/agendamento/:id', cors(), async function(request, response) {
-    let dados = await controllerAgendamentos.getById(request.params.id);
+    let dados = await controllerAgendamentos.getId(request.params.id);
     response.status(dados.status_code);
     response.json(dados);
 });

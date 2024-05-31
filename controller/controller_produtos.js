@@ -121,9 +121,9 @@ const setAtualizar = async function (id, dados, contentType) {
 }
 
 module.exports = {
+    setInserir,
+    setAtualizar,
     setExcluir,
     getAll,
     getId,
-    setInserir,
-    setAtualizar
 }

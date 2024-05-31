@@ -120,5 +120,5 @@ module.exports = {
     setAtualizar,
     setExcluir,
     getAll,
-    getId
+    getId,
 }

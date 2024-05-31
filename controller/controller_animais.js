@@ -49,7 +49,7 @@ const getAll = async function () {
 }
 
 // Função para obter animal por ID com detalhes completos
-const getById = async function (id) {
+const getId = async function (id) {
     let resultJSON = {};
     let dados = await DAO.selectById(id);
     if (dados) {
@@ -203,10 +203,11 @@ const setAtualizar = async function (id, dados, contentType) {
 
 
 module.exports = {
-    getAll,
-    getById,
-    getByClienteId,
     setInserir,
     setAtualizar,
-    setExcluir
+    setExcluir,
+    getAll,
+    getId,
+    getByClienteId,
+ 
 };
