@@ -158,6 +158,42 @@ server.put('/v1/laika/produto/:id', cors(), bodyParserJSON,async function(reques
 //     response.json(resultadoAtualizacao);
 // });
 
+//------------------------------------------------------------CATEGORIAS-----------------------------------------------------------------------//
+const controllerCategorias = require('./controller/controller_categorias.js')
+
+server.get('/v1/laika/categorias', cors(), async function(request, response,){
+    let dados = await controllerCategorias.getAll();
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/categoria/:id', cors(), async function(request, response,){
+    let dados = await controllerCategorias.getId(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.post('/v1/laika/categoria', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerCategorias.setInserir(dadosBody, contentType);
+
+    response.status(result.status_code);
+    response.json(result);
+});
+server.put('/v1/laika/categoria/:id', cors(), bodyParserJSON,async function(request,response){
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body;
+
+    let result = await controllerCategorias.setAtualizar(request.params.id, dadosBody, contentType)    
+    response.status(result.status_code)
+    response.json(result)
+})
+server.delete('/v1/laika/categoria/:id', cors(), async function(request,response){
+    let dados = await controllerCategorias.setExcluir(request.params.id)
+
+    response.status(dados.status_code)
+    response.json(dados)})
+
 //------------------------------------------------------------SERVICOS-----------------------------------------------------------------------//
 
 const controllerServicos = require('./controller/controller_servicos.js')
@@ -250,10 +286,10 @@ server.post('/v1/laika/cargo', cors(), bodyParserJSON,async function(request,res
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
 
-    let newCargo = await controllerCargos.setInserir(dadosBody, contentType);
+    let result = await controllerCargos.setInserir(dadosBody, contentType);
 
-    response.status(newCargo.status_code);
-    response.json(newCargo);
+    response.status(result.status_code);
+    response.json(result);
 });
 server.put('/v1/laika/cargo/:id', cors(), bodyParserJSON,async function(request,response){
     let contentType = request.headers['content-type'];

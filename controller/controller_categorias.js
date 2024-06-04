@@ -1,4 +1,4 @@
-const DAO = require('../model/DAO/cargo.js'); // Ajuste o caminho conforme necessário
+const DAO = require('../model/DAO/categorias.js'); // Ajuste o caminho conforme necessário
 const message = require('../modulo/config.js')
 
 const setInserir = async function (dados, contentType) {

@@ -88,7 +88,7 @@ const getId = async function (id) {
 // Função para obter animais por ID do cliente com detalhes completos
 const getByClienteId = async function (clienteId) {
     let resultJSON = {};
-    let dados = await DAO.selectByIdCliente(clienteId);
+    let dados = await DAO.selectByClienteId(clienteId);
 
     if (dados) {
         if (dados.length > 0) {

@@ -147,6 +147,19 @@ const selectAllVeterinarios = async function (){
         return false
     }
 }
+const insertCargoFuncionario = async function (dados) {
+    try {
+
+        let sql = `INSERT INTO ${tabelaCargosFuncionarios} (cargo_id, funcionario_id) VALUES (?, ?)`;
+        let result = await prisma.$executeRawUnsafe(sql,
+            dados.idCargo,
+             dados.idFuncionario);             
+        return result ? true : false;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};
 
 
 
@@ -157,5 +170,6 @@ module.exports= {
     pegarUltimoId,
     selectAll,
     selectById,
-    selectAllVeterinarios
+    selectAllVeterinarios,
+    insertCargoFuncionario
 }

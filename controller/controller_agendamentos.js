@@ -24,10 +24,10 @@ const setInserir = async function (dados, contentType) {
                 if (result) {
                     let idAgendamento = await DAO.pegarUltimoId();
                     if(dados.funcionarios){
-                        (dados.funcionarios).forEach(idFuncionario => {
+                        (dados.funcionarios).forEach(element => {
                             const json = {
                                 idAgendamento,
-                                idFuncionario
+                                idFuncionario: element
                             }
                             DAO.insertAgendamentoFuncionarios(json)
                         });
