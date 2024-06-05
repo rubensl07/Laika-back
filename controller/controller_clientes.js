@@ -70,8 +70,14 @@ const getId = async function (id) {
                 }
                 delete dados[0].endereco_id
                 let listaAnimais = await animalDAO.selectByClienteId(id)
-                if(listaAnimais.length>0){
-                    dados[0].animais = listaAnimais
+                let listaAnimaisController = []
+                for(animal of listaAnimais){
+                    const dadosAnimal = (await animalController.getId(animal.id)).dados
+                    delete dadosAnimal.dono
+                    listaAnimaisController.push(dadosAnimal)
+                }
+                if(listaAnimaisController.length>0){
+                    dados[0].animais = listaAnimaisController
                 }
                 
                 json.dados = dados[0]
