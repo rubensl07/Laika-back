@@ -176,9 +176,7 @@ const deletar = async function (id) {
 
 const selectByClienteId = async function (id) {
     try {
-        const sql = `SELECT id,nome,img FROM ${tabela} WHERE cliente_id = ${id}`;
-        console.log(sql);
-        
+        const sql = `SELECT * FROM ${tabela} WHERE cliente_id = ${id}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {

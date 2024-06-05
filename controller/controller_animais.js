@@ -31,7 +31,6 @@ const getAll = async function () {
                     delete racaJSON.srd
                     dados[index].raca = racaJSON
                 }
-                
                 delete dados[index].raca_id
                 dados[index].porte = (await portesDAO.selectById(dados[index].porte_id))[0]
                 delete dados[index].porte_id

@@ -2,6 +2,8 @@ const message = require('../modulo/config.js')
 const DAO = require('../model/DAO/cliente.js')
 const enderecosDAO = require('../model/DAO/endereco.js');
 const animalDAO = require('../model/DAO/animal.js')
+const animalController = require('./controller_animais.js')
+
 
 
 
@@ -24,9 +26,15 @@ const getAll = async function () {
                     dados[index].endereco = novoEndereco
                 }
                 delete dados[index].endereco_id
-                let listaAnimais = await animalDAO.selectByClienteId(index)
-                if(listaAnimais.length>0){
-                    dados[index].animais = listaAnimais
+                let listaAnimais = await animalDAO.selectByClienteId(dados[index].id)
+                let listaAnimaisController = []
+                for (animal of listaAnimais){
+                    const dadosAnimal = (await animalController.getId(animal.id)).dados
+                    delete dadosAnimal.dono
+                    listaAnimaisController.push(dadosAnimal)
+                }
+                if(listaAnimaisController.length>0){
+                    dados[index].animais = listaAnimaisController
                 }
             }
             json.dados = dados;
