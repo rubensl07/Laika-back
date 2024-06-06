@@ -35,8 +35,7 @@ const selectAll = async (search) => {
         if(search.precoMax){
             maxSearch = search.precoMax
         }
-        let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, COALESCE(c.categorias, '') AS categorias FROM ${tabela} p 
-        LEFT JOIN ( SELECT pc.produto_id, GROUP_CONCAT(DISTINCT pc.categoria_id SEPARATOR '-') AS categorias FROM ${tabelaCategoriaProduto} pc GROUP BY pc.produto_id ) c ON p.id = c.produto_id where (p.nome like '%${pesquisaSearch}%' OR p.descricao  like '%${pesquisaSearch}%') AND (p.preco >= ${minSearch}) AND (p.preco <= ${maxSearch});`;
+        let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, p.categoria_id FROM ${tabela} p`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
@@ -46,8 +45,7 @@ const selectAll = async (search) => {
 }
 const selectById = async function (search) {
     try {
-        let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, COALESCE(c.categorias, '') AS categorias FROM ${tabela} p 
-        LEFT JOIN ( SELECT pc.produto_id, GROUP_CONCAT(DISTINCT pc.categoria_id SEPARATOR '-') AS categorias FROM ${tabelaCategoriaProduto} pc GROUP BY pc.produto_id ) c ON p.id = c.produto_id where p.id = ${search}`;
+        let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, p.categoria_id FROM ${tabela} p where p.id = ${search}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {

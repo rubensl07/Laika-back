@@ -8,23 +8,7 @@ const getAll = async function (search) {
     let dados = await DAO.selectAll(search);
     
         if (dados) {
-        if(dados.length > 0) {
-
-            for (let index = 0; index < dados.length; index++) {
-                if(dados[index].categorias){
-
-                const listaIdsCategorias = dados[index].categorias.split('-')
-                const listaCategorias = []
-                for(let idCategoria of listaIdsCategorias){       
-                    const categoria = (await categoriasDAO.selectById(parseInt(idCategoria)))[0]
-                    listaCategorias.push(categoria)
-                } 
-                dados[index].categorias = listaCategorias                
-            } else {
-                delete dados[index].categorias
-            }
-        }
-            
+        if(dados.length > 0) {            
             resultJSON.produtos = dados;
             resultJSON.quantidade = dados.length;
             resultJSON.status_code = 200;
@@ -44,18 +28,6 @@ const getId = async function (id) {
         let dados = await DAO.selectById(id);
         if (dados) {
             if (dados.length > 0) {
-                if(dados[0].categorias){
-                    const listaIdsCategorias = dados[0].categorias.split('-')
-                    const listaCategorias = []
-                    for(let idCategoria of listaIdsCategorias){       
-                        const categoria = (await categoriasDAO.selectById(parseInt(idCategoria)))[0]
-                        listaCategorias.push(categoria)
-                    } 
-                    dados[0].categorias = listaCategorias
-                } else {
-                    delete dados[0].categorias
-                }
-                
                 json.dados = dados[0];
                 json.status_code = 200;
                 return json;
@@ -89,7 +61,8 @@ const setInserir = async function (dados, contentType) {
         dados.nome == ''|| dados.nome == undefined|| dados.nome == null||dados.nome.length > 100 ||
         dados.descricao == ''|| dados.descricao == undefined|| dados.descricao == null||dados.descricao.length > 65000 ||
         dados.img == ''|| dados.img == undefined|| dados.img == null||dados.img.length > 200 ||
-        dados.quantidade_estoque == ''|| dados.quantidade_estoque == undefined|| dados.quantidade_estoque == null||isNaN(dados.quantidade_estoque)
+        dados.quantidade_estoque == ''|| dados.quantidade_estoque == undefined|| dados.quantidade_estoque == null||isNaN(dados.quantidade_estoque)||
+        isNaN(dados.produto_id)
         )
     {
        return message.ERROR_REQUIRED_FIELDS //400
@@ -98,15 +71,7 @@ const setInserir = async function (dados, contentType) {
             let result = await DAO.insert(dados)
             let id = await DAO.pegarUltimoId()
             if(result && id) {
-                if(dados.categorias){
-                    (dados.categorias).forEach(element => {
-                        const json = {
-                            idProduto: id,
-                            idCategoria: element
-                        }
-                        DAO.insertCategoriaProduto(json)
-                    });
-                }
+
 
                 json.dados = dados
                 json.status = message.SUCCESS_CREATED_ITEM.status
