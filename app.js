@@ -18,6 +18,56 @@ server.use((request,response,next)=>{
     next();
 })
 
+
+server.get('/', async (req, response) => {
+    try {
+        const json = 
+        {
+            "API": "API do Laika",
+            "endpoints_disponiveis": [
+              {
+                "animais":{
+                    "descricao":"",
+                    "ENDPOINTS":{
+                        "get": "/animais",
+                        "getById":"/animal/(id)",
+                        "post": "/animais",
+                        "delete":"/animais"
+                    }
+                }
+              },
+              {
+              "clientes":{
+                    "descricao":"",
+                    "ENDPOINTS":{
+                        "get": "/clientes",
+                        "getById":"/cliente/(id)",
+                        "post": "/cliente",
+                        "delete":"/cliente/(id)"
+                    }
+
+                }
+              },
+              {
+                "endpoint": "/albuns",
+                "descricao": "Retorna informações sobre álbuns."
+              }
+            ],
+            "autor": "Essa API foi produzida por Rubens Lobo, vulgo, Wolfy",
+            "contato": {
+              "email": "rubensluizlobo@gmail.com"
+//              "website": "https://api-musica.com"
+            }
+//            "documentacao": "https://api-musica.com/documentacao"
+          }
+          
+        return response.json(json);
+    } catch (error) {
+        console.error(error);
+        return response.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 //------------------------------------------------------------CLIENTES-----------------------------------------------------------------------//
 const controllerClientes = require('./controller/controller_clientes.js')
 

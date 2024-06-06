@@ -95,6 +95,18 @@ const getId = async function (id) {
                 if(listaAnimaisController.length>0){
                     dados[0].animais = listaAnimaisController
                 }
+                let agendamentosCliente = await agendamentoDAO.selectByClienteId(dados[0].id)
+                const listaIdsAgendamentos = []
+                agendamentosCliente.forEach(element => {
+                    listaIdsAgendamentos.push(element.id)
+                })
+                if(listaIdsAgendamentos.length>0){
+                    const listaAgendamentos = []
+                    listaIdsAgendamentos.forEach(async element => {
+                        listaAgendamentos.push((await agendamentoController.getId(element)).dados)
+                    });
+                    dados[0].agendamentos = listaAgendamentos
+                }
                 
                 json.dados = dados[0]
                 json.status_code = 200
