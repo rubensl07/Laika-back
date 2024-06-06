@@ -7,7 +7,9 @@ var tabelaCategoriaProduto = "tbl_categorias_produtos"
 // Selecionar todos os perodutos
 const deletar = async function (id) {
     try {
+        const sqlCategoria = `delete from ${tabelaCategoriaProduto} where produto_id =${id}`
         const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
+        let resultCategoria = await prisma.$executeRawUnsafe(sqlCategoria)
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true

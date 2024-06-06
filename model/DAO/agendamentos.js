@@ -112,18 +112,36 @@ const selectAll = async function (){
 
 const selectById = async function (id) {
     try {
-        const sql = `SELECT a.id, a.data_agendamento, a.animal_id,
-         COALESCE(f.funcionarios, '') AS funcionarios, 
-         COALESCE(s.servicos, '')
-          AS servicos FROM ${tabela} a LEFT JOIN
-           ( SELECT af.agendamento_id,
-             GROUP_CONCAT(DISTINCT af.funcionario_id SEPARATOR '-')
-              AS funcionarios FROM ${tabelaAgendamentoFuncionarios} af GROUP BY
-               af.agendamento_id ) f ON a.id = f.agendamento_id LEFT JOIN
-                ( SELECT asv.agendamento_id, GROUP_CONCAT(DISTINCT asv.servico_id 
-                    SEPARATOR '-') AS servicos FROM ${tabelaAgendamentoServicos}
-                     asv GROUP BY asv.agendamento_id ) s ON a.id = s.agendamento_id
-                      where a.id = ${id}`;
+        const sql = `SELECT 
+        a.id, 
+        a.data_agendamento, 
+        a.animal_id,
+        a.receita, -- Including the receita column
+        COALESCE(f.funcionarios, '') AS funcionarios, 
+        COALESCE(s.servicos, '') AS servicos 
+    FROM 
+        ${tabela} a 
+    LEFT JOIN (
+        SELECT 
+            af.agendamento_id, 
+            GROUP_CONCAT(DISTINCT af.funcionario_id SEPARATOR '-') AS funcionarios 
+        FROM 
+            ${tabelaAgendamentoFuncionarios} af 
+        GROUP BY 
+            af.agendamento_id
+    ) f ON a.id = f.agendamento_id 
+    LEFT JOIN (
+        SELECT 
+            asv.agendamento_id, 
+            GROUP_CONCAT(DISTINCT asv.servico_id SEPARATOR '-') AS servicos 
+        FROM 
+            ${tabelaAgendamentoServicos} asv 
+        GROUP BY 
+            asv.agendamento_id
+    ) s ON a.id = s.agendamento_id
+    WHERE 
+        a.id = ${id};
+    `;
         let result = await prisma.$queryRawUnsafe(sql);
         console.log(sql);
         return result
