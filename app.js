@@ -12,8 +12,8 @@ const bodyParserJSON = bodyParser.json()
 var cors = require('cors') 
 
 server.use((request,response,next)=>{
-    response.header('Acess-Control-Allow-Origin','*');
-    response.header('Acess-Control-Allow-Methods','GET, POST, PUT, DELETE, OPTIONS');
+    response.header('Access-Control-Allow-Origin','*');
+    response.header('Access-Control-Allow-Methods','GET, POST, PUT, DELETE, OPTIONS');
     server.use(cors());
     next();
 })
@@ -32,6 +32,7 @@ server.get('/', async (req, response) => {
                         "get": "/animais",
                         "getById":"/animal/(id)",
                         "post": "/animais",
+                        "put": "/animais",
                         "delete":"/animais"
                     }
                 }
