@@ -96,18 +96,17 @@ const getId = async function (id) {
                     dados[0].animais = listaAnimaisController
                 }
                 let agendamentosCliente = await agendamentoDAO.selectByClienteId(dados[0].id)
-                const listaIdsAgendamentos = []
-                agendamentosCliente.forEach(element => {
-                    listaIdsAgendamentos.push(element.id)
-                })
-                if(listaIdsAgendamentos.length>0){
+                if(agendamentosCliente.length>0){
+                    const listaIdsAgendamentos = []
+                    for(element of agendamentosCliente){
+                        listaIdsAgendamentos.push(element.id)
+                    }
                     const listaAgendamentos = []
-                    listaIdsAgendamentos.forEach(async element => {
+                    for(element of listaIdsAgendamentos){
                         listaAgendamentos.push((await agendamentoController.getId(element)).dados)
-                    });
+                    }
                     dados[0].agendamentos = listaAgendamentos
                 }
-                
                 json.dados = dados[0]
                 json.status_code = 200
                 return json
