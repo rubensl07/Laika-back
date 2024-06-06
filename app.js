@@ -159,6 +159,7 @@ server.get('/v1/laika/produtos', cors(), async function(request, response,){
         pesquisa: request.query.pesquisa,
         precoMin: request.query.precoMin,
         precoMax: request.query.precoMax, 
+        categoria: request.query.categoria
     }
     let dados = await controllerProdutos.getAll(search);
     response.status(dados.status_code)

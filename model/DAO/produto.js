@@ -2,14 +2,13 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 var tabela = "tbl_produtos"
-var tabelaCategoriaProduto = "tbl_categorias_produtos"
+var tabela = "tbl_produtos"
+var tabelaCategoria = "tbl_categorias"
 
 // Selecionar todos os perodutos
 const deletar = async function (id) {
     try {
-        const sqlCategoria = `delete from ${tabelaCategoriaProduto} where produto_id =${id}`
         const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
-        let resultCategoria = await prisma.$executeRawUnsafe(sqlCategoria)
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true
@@ -35,7 +34,13 @@ const selectAll = async (search) => {
         if(search.precoMax){
             maxSearch = search.precoMax
         }
-        let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, p.categoria_id FROM ${tabela} p`;
+        let categoriaSearch = `SELECT id FROM ${tabelaCategoria}`
+        if(search.categoria){
+            categoriaSearch = search.categoria
+        }
+
+        let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, p.categoria_id FROM ${tabela} p where (p.nome like '%${pesquisaSearch}%' OR p.descricao  like '%${pesquisaSearch}%') AND (p.preco >= ${minSearch}) AND (p.preco <= ${maxSearch}) AND (p.categoria_id IN(${categoriaSearch}))`;
+        console.log(sql);
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {
@@ -55,14 +60,16 @@ const selectById = async function (search) {
 }
 const insert = async function(dados){
     try {
-        let sql = `INSERT INTO ${tabela} (nome, descricao, preco, img, quantidade_estoque) VALUES (?, ?, ?, ?, ?);`;
+        let sql = `INSERT INTO ${tabela} (nome, descricao, preco, img, quantidade_estoque, categoria_id) VALUES (?, ?, ?, ?, ?,?);`;
 
         let result = await prisma.$executeRawUnsafe(sql,
             dados.nome,
             dados.descricao,
             dados.preco,
             dados.img,
-            dados.quantidade_estoque);
+            dados.quantidade_estoque,
+            dados.idCategoria
+            )
         if (result) {
             return true
         } else {
@@ -82,7 +89,8 @@ const update = async function (id, dados) {
                 descricao = '${dados.descricao}',
                 preco = ${dados.preco},
                 img = '${dados.img}',
-                quantidade_estoque = ${dados.quantidade_estoque}
+                quantidade_estoque = ${dados.quantidade_estoque},
+                categoria_id = ${dados.idCategoria}
             WHERE id = ${id};
         `;
         let result = await prisma.$executeRawUnsafe(sql)
@@ -112,19 +120,6 @@ const pegarUltimoId = async function() {
     }
 }
 
-const insertCategoriaProduto = async function (dados) {
-    try {
-
-        let sql = `INSERT INTO ${tabelaCategoriaProduto} (produto_id, categoria_id) VALUES (?, ?)`;
-        let result = await prisma.$executeRawUnsafe(sql,
-            dados.idProduto,
-             dados.idCategoria);             
-        return result ? true : false;
-    } catch (error) {
-        console.error(error);
-        return false;
-    }
-};
 module.exports= {
     selectAll,
     selectById,
@@ -132,5 +127,4 @@ module.exports= {
     deletar,
     insert,
     update,
-    insertCategoriaProduto
 }
