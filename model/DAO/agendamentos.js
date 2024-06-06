@@ -60,20 +60,35 @@ const insertAgendamentoFuncionarios = async function (dados) {
 // Selecionar todos os Servicos
 const selectAll = async function (){
     try {
-        const sql = `SELECT a.id, a.data_agendamento, a.animal_id,
-         COALESCE(f.funcionarios, '') AS funcionarios, 
-         COALESCE(s.servicos, '') AS servicos FROM ${tabela} a LEFT JOIN 
-         ( SELECT af.agendamento_id, GROUP_CONCAT(DISTINCT
-             af.funcionario_id SEPARATOR '-')
-              AS funcionarios FROM ${tabelaAgendamentoFuncionarios}
-               af GROUP BY af.agendamento_id ) f ON
-                a.id = f.agendamento_id LEFT JOIN 
-                ( SELECT asv.agendamento_id, GROUP_CONCAT
-                    (DISTINCT asv.servico_id SEPARATOR '-') 
-                    AS servicos FROM ${tabelaAgendamentoServicos} 
-                    asv GROUP BY asv.agendamento_id ) s ON
-                     a.id = s.agendamento_id`;
+        const sql = `SELECT 
+        a.id, 
+        a.data_agendamento, 
+        a.animal_id, 
+        a.receita, -- Including the receita column
+        COALESCE(f.funcionarios, '') AS funcionarios, 
+        COALESCE(s.servicos, '') AS servicos 
+    FROM 
+        ${tabela} a 
+    LEFT JOIN (
+        SELECT 
+            af.agendamento_id, 
+            GROUP_CONCAT(af.funcionario_id SEPARATOR '-') AS funcionarios 
+        FROM 
+            ${tabelaAgendamentoFuncionarios} af 
+        GROUP BY 
+            af.agendamento_id
+    ) f ON a.id = f.agendamento_id 
+    LEFT JOIN (
+        SELECT 
+            asv.agendamento_id, 
+            GROUP_CONCAT(asv.servico_id SEPARATOR '-') AS servicos 
+        FROM 
+            ${tabelaAgendamentoServicos} asv 
+        GROUP BY 
+            asv.agendamento_id
+    ) s ON a.id = s.agendamento_id`;
         let result = await prisma.$queryRawUnsafe(sql);
+        console.log(result);
         return result;
     } catch (error) {
         console.error(error);
