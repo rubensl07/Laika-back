@@ -10,7 +10,7 @@ var tabelaAgendamentoFuncionario = "tbl_agendamento_funcionario"
 const insert = async function (dados) {
     try {
         let sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id) VALUES (?, ?, ?, ?, ?);`;
-
+        
         let result = await prisma.$executeRawUnsafe(sql,
             dados.nome,
             dados.telefone,
@@ -52,7 +52,9 @@ const update = async function (id, dados) {
 }
 const deletar = async function (id) {
     try {
-        const sql = `DELETE FROM ${tabela} WHERE id = ${id}`;
+        const sqlCargos = `DELETE FROM ${tabela} WHERE id = ${id}`
+        const sql = `DELETE FROM ${tabela} WHERE id = ${id}`
+        let resultCargos = await prisma.$executeRawUnsafe(sqlCargos)
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true
