@@ -52,9 +52,11 @@ const update = async function (id, dados) {
 }
 const deletar = async function (id) {
     try {
-        const sqlCargos = `DELETE FROM ${tabela} WHERE id = ${id}`
+        const sqlCargos = `DELETE FROM ${tabelaCargosFuncionarios} WHERE funcionario_id = ${id}`
+        const sqlAgendamentos = `DELETE FROM ${tabelaAgendamentoFuncionario} WHERE funcionario_id = ${id}`
         const sql = `DELETE FROM ${tabela} WHERE id = ${id}`
         let resultCargos = await prisma.$executeRawUnsafe(sqlCargos)
+        let resultAgendamentos= await prisma.$executeRawUnsafe(sqlAgendamentos)
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true
