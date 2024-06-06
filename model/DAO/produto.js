@@ -19,10 +19,22 @@ const deletar = async function (id) {
         return false
     }
 }
-const selectAll = async () => {
+const selectAll = async (search) => {
     try {
+        let pesquisaSearch = ''
+        if(search.pesquisa){
+            pesquisaSearch = search.pesquisa
+        }
+        let minSearch = 0
+        if(search.precoMin){
+            minSearch = search.precoMin
+        }
+        let maxSearch = 999999999
+        if(search.precoMax){
+            maxSearch = search.precoMax
+        }
         let sql = `SELECT p.id, p.nome, p.descricao, p.preco, p.img, p.quantidade_estoque, COALESCE(c.categorias, '') AS categorias FROM ${tabela} p 
-        LEFT JOIN ( SELECT pc.produto_id, GROUP_CONCAT(DISTINCT pc.categoria_id SEPARATOR '-') AS categorias FROM ${tabelaCategoriaProduto} pc GROUP BY pc.produto_id ) c ON p.id = c.produto_id`;
+        LEFT JOIN ( SELECT pc.produto_id, GROUP_CONCAT(DISTINCT pc.categoria_id SEPARATOR '-') AS categorias FROM ${tabelaCategoriaProduto} pc GROUP BY pc.produto_id ) c ON p.id = c.produto_id where (p.nome like '%${pesquisaSearch}%' OR p.descricao  like '%${pesquisaSearch}%') AND (p.preco >= ${minSearch}) AND (p.preco <= ${maxSearch});`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result;
     } catch (error) {

@@ -3,9 +3,9 @@ const enderecosDAO = require('../model/DAO/endereco.js');
 const cargosDAO = require('../model/DAO/cargo.js');
 const DAO = require('../model/DAO/funcionario.js')
 
-const getAll = async function () {
+const getAll = async function (search) {
     let json = {};
-    let dados = await DAO.selectAll();
+    let dados = await DAO.selectAll(search);
         if (dados) {
         if(dados.length > 0) {
             for (let index = 0; index < dados.length; index++) {
@@ -52,6 +52,9 @@ const getAllVeterinarios = async function () {
         if(dados.length > 0) {
             for (let index = 0; index < dados.length; index++) {
                 if(dados[index].endereco_id){
+                    console.log(dados[index]);
+                    dados[index].total_agendamentos = parseInt(dados[index].total_agendamentos)
+
                     const endereco = await enderecosDAO.selectById(dados[index].endereco_id)
                     const novoEndereco = {}
                     novoEndereco.rua = endereco[0].rua
@@ -241,11 +244,13 @@ const setExcluir = async function (id) {
     }
 }
 
+
+
 module.exports = {
     setInserir,
     setAtualizar,
     setExcluir,
     getAll,
     getId,
-    getAllVeterinarios
+    getAllVeterinarios,
 }

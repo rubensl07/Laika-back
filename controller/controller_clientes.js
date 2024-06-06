@@ -3,6 +3,9 @@ const DAO = require('../model/DAO/cliente.js')
 const enderecosDAO = require('../model/DAO/endereco.js');
 const animalDAO = require('../model/DAO/animal.js')
 const animalController = require('./controller_animais.js')
+const agendamentoDAO = require('../model/DAO/agendamentos.js')
+const agendamentoController = require('./controller_agendamentos.js')
+
 
 
 
@@ -36,6 +39,19 @@ const getAll = async function () {
                 if(listaAnimaisController.length>0){
                     dados[index].animais = listaAnimaisController
                 }
+                let agendamentosCliente = await agendamentoDAO.selectByClienteId(dados[index].id)
+                const listaIdsAgendamentos = []
+                agendamentosCliente.forEach(element => {
+                    listaIdsAgendamentos.push(element.id)
+                })
+                if(listaIdsAgendamentos.length>0){
+                    const listaAgendamentos = []
+                    listaIdsAgendamentos.forEach(async element => {
+                        listaAgendamentos.push((await agendamentoController.getId(element)).dados)
+                    });
+                    dados[index].agendamentos = listaAgendamentos
+                }
+
             }
             json.dados = dados;
             json.quantidade = dados.length

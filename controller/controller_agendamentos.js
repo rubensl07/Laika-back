@@ -99,6 +99,7 @@ const getAll = async function () {
                         delete funcionario.email
                         delete funcionario.senha
                         delete funcionario.endereco_id
+                        delete funcionario.total_agendamentos
                         if(funcionario.cargos){
                             const listaIdsCargos = funcionario.cargos.split('-')
                             let listaCargos = []
@@ -129,7 +130,7 @@ const getAll = async function () {
     } else {
         return message.ERROR_INTERNAL_SERVER_DB; // 500
     }
-};
+}
 
 const getId = async function (id) {
     let json = {};
@@ -156,6 +157,7 @@ const getId = async function (id) {
                         delete funcionario.email
                         delete funcionario.senha
                         delete funcionario.endereco_id
+                        delete funcionario.total_agendamentos
                         if(funcionario.cargos){
                             const listaIdsCargos = funcionario.cargos.split('-')
                             let listaCargos = []
@@ -239,6 +241,65 @@ const setInserirAgendamentoServicos = async function (dados, contentType) {
         return message.ERROR_INTERNAL_SERVER; // 500 - Erro na controller
     }
 };
+
+
+// const getAll = async function () {
+//     let json = {};
+//     let dados = await DAO.selectAll();
+//     if (dados) {
+//         if (dados.length > 0) {
+//             for (let index = 0; index < dados.length; index++) {
+//                 dados[index].data_agendamento = tratarData(dados[index].data_agendamento)
+//                 const infoAnimal = (await animalDAO.selectById(dados[index].animal_id))[0]  
+//                 delete dados[index].animal_id                  
+//                 delete infoAnimal.nascimento
+//                 delete infoAnimal.peso
+//                 delete infoAnimal.cliente_id
+//                 delete infoAnimal.porte_id
+//                 delete infoAnimal.raca_id
+//                 dados[index].animal = infoAnimal 
+//                 if(dados[index].funcionarios){
+//                     const listaIdsFuncionarios = dados[index].funcionarios.split('-')
+//                     let listaFuncionarios = []
+//                     for (let idFuncionario of listaIdsFuncionarios) {
+//                         // const funcionario = (await funcionariosController.getId(parseInt(idFuncionario))).dados
+//                         const funcionario = (await funcionariosDAO.selectById(parseInt(idFuncionario)))[0];
+//                         delete funcionario.email
+//                         delete funcionario.senha
+//                         delete funcionario.endereco_id
+//                         if(funcionario.cargos){
+//                             const listaIdsCargos = funcionario.cargos.split('-')
+//                             let listaCargos = []
+//                             for(let idCargo of listaIdsCargos){
+//                                 listaCargos.push((await cargosDAO.selectById(parseInt(idCargo)))[0])
+//                             }
+//                             funcionario.cargos = listaCargos
+//                         }
+//                         listaFuncionarios.push(funcionario);
+//                     }
+//                     dados[index].funcionarios = listaFuncionarios
+//                 }
+//                 if(dados[index].servicos){
+//                     const listaIdsServicos = dados[index].servicos.split('-')
+//                     let listaServicos = []
+//                     for (let idServico of listaIdsServicos) {
+//                         listaServicos.push((await servicosDAO.selectById(parseInt(idServico)))[0]);
+//                     }
+//                     dados[index].servicos = listaServicos
+//                 }
+//             }
+//             json.dados = dados;
+//             json.status_code = 200;
+//             return json;
+//         } else {
+//             return message.ERROR_NOT_FOUND; // 404
+//         }
+//     } else {
+//         return message.ERROR_INTERNAL_SERVER_DB; // 500
+//     }
+// };
+
+
 
 
 module.exports = {

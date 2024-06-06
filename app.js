@@ -58,7 +58,11 @@ server.delete('/v1/laika/cliente/:id', cors(), async function(request,response){
 const controllerFuncionarios = require('./controller/controller_funcionario.js')
 
 server.get('/v1/laika/funcionarios', cors(), async function(request, response,){
-    let dados = await controllerFuncionarios.getAll();
+    const search ={
+        nome: request.query.nome,
+        cargos: request.query.cargos
+    } 
+    let dados = await controllerFuncionarios.getAll(search);
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -100,7 +104,12 @@ server.get('/v1/laika/veterinarios', cors(), async function(request, response,){
 const controllerProdutos = require('./controller/controller_produtos.js')
 
 server.get('/v1/laika/produtos', cors(), async function(request, response,){
-    let dados = await controllerProdutos.getAll();
+    const search = {
+        pesquisa: request.query.pesquisa,
+        precoMin: request.query.precoMin,
+        precoMax: request.query.precoMax, 
+    }
+    let dados = await controllerProdutos.getAll(search);
     response.status(dados.status_code)
     response.json(dados)
 })

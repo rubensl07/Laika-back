@@ -3,9 +3,9 @@ const categoriasDAO = require('../model/DAO/categorias.js')
 const DAO = require('../model/DAO/produto.js')
 
 
-const getAll = async function () {
+const getAll = async function (search) {
     let resultJSON = {};
-    let dados = await DAO.selectAll();
+    let dados = await DAO.selectAll(search);
     
         if (dados) {
         if(dados.length > 0) {

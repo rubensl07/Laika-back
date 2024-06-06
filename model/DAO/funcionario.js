@@ -4,8 +4,10 @@ const prisma = new PrismaClient();
 var tabela = "tbl_funcionarios"
 var tabelaCargos = "tbl_cargos"
 var tabelaCargosFuncionarios = "tbl_cargos_funcionarios"
+var tabelaAgendamentos = "tbl_agendamentos"
+var tabelaAgendamentoFuncionario = "tbl_agendamento_funcionario"
 
-const insert = async function(dados){
+const insert = async function (dados) {
     try {
         let sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id) VALUES (?, ?, ?, ?, ?);`;
 
@@ -27,7 +29,7 @@ const insert = async function(dados){
 }
 
 const update = async function (id, dados) {
-    try{
+    try {
         let sql = `
             UPDATE ${tabela}
             SET 
@@ -38,12 +40,12 @@ const update = async function (id, dados) {
             WHERE id = ${id};
         `;
         let result = await prisma.$executeRawUnsafe(sql)
-        if(result) {
+        if (result) {
             return true
         } else {
             return false
         }
-    } catch (error){
+    } catch (error) {
         console.error(error);
         return false
     }
@@ -62,30 +64,57 @@ const deletar = async function (id) {
         return false
     }
 }
-const selectAll = async function (){
+const selectAll = async function (search) {
     try {
-        let sql = 
-        `SELECT 
-        f.id,
-        f.nome,
-        f.telefone,
-        f.email,
-        f.senha,
-        f.endereco_id,
-        (SELECT 
-            GROUP_CONCAT(c.id SEPARATOR '-') 
-         FROM 
-            ${tabelaCargos} c 
-         INNER JOIN 
-            ${tabelaCargos}_funcionarios cf 
-         ON 
-            c.id = cf.cargo_id 
-         WHERE 
-            cf.funcionario_id = f.id
-        ) AS cargos
-    FROM 
-        ${tabela} f`
+        let nomeSearch = ''
+        if (search.nome) {
+            nomeSearch = search.nome
+        }
+        let cargosSearch
+        if (search.cargos) {
+            cargosSearch = `(cf.cargo_id IN (${search.cargos}))`
+        } else {
+            cargosSearch = `(cf.cargo_id IN (SELECT id FROM ${tabelaCargos}) OR cf.cargo_id IS NULL)`
+        }
+        let sql =
+                `
+        SELECT 
+    f.id,
+    f.nome,
+    f.telefone,
+    f.email,
+    f.senha,
+    f.endereco_id,
+    GROUP_CONCAT(c.id SEPARATOR '-') AS cargos,
+    COALESCE(total_agendamentos, 0) AS total_agendamentos
+FROM
+${tabela} f
+LEFT JOIN
+${tabelaCargosFuncionarios} cf ON f.id = cf.funcionario_id
+LEFT JOIN
+${tabelaCargos} c ON cf.cargo_id = c.id
+LEFT JOIN
+    (SELECT 
+        funcionario_id,
+        COUNT(*) AS total_agendamentos
+    FROM
+    ${tabelaAgendamentoFuncionario} af
+    LEFT JOIN
+    ${tabelaAgendamentos} a ON af.agendamento_id = a.id
+    GROUP BY
+        funcionario_id) AS agendamentos_count ON f.id = agendamentos_count.funcionario_id
+WHERE
+    f.nome LIKE '%${nomeSearch}%'
+    AND ${cargosSearch}
+GROUP BY
+    f.id;
+`
+
         let result = await prisma.$queryRawUnsafe(sql);
+        for (let index = 0; index < result.length; index++) {
+            result[index].total_agendamentos = parseInt(result[index].total_agendamentos)            
+        }
+
         return result;
     } catch (error) {
         console.error(error);
@@ -94,50 +123,59 @@ const selectAll = async function (){
 }
 const selectById = async function (search) {
     try {
-        const sql = 
-        `SELECT 
-        f.id,
-        f.nome,
-        f.telefone,
-        f.email,
-        f.senha,
-        f.endereco_id,
-        (SELECT 
-            GROUP_CONCAT(c.id SEPARATOR '-') 
-         FROM 
-            ${tabelaCargos} c 
-         INNER JOIN 
-            ${tabelaCargos}_funcionarios cf 
-         ON 
-            c.id = cf.cargo_id 
-         WHERE 
-            cf.funcionario_id = f.id
-        ) AS cargos
-    FROM 
-        ${tabela} f 
-        WHERE id = ${search}`;
-        let result = await prisma.$queryRawUnsafe(sql);
+        const sql =
+        `
+        SELECT 
+    f.id,
+    f.nome,
+    f.telefone,
+    f.email,
+    f.senha,
+    f.endereco_id,
+    GROUP_CONCAT(c.id SEPARATOR '-') AS cargos,
+    COALESCE(total_agendamentos, 0) AS total_agendamentos
+FROM
+${tabela} f
+LEFT JOIN
+${tabelaCargosFuncionarios} cf ON f.id = cf.funcionario_id
+LEFT JOIN
+${tabelaCargos} c ON cf.cargo_id = c.id
+LEFT JOIN
+    (SELECT 
+        funcionario_id,
+        COUNT(*) AS total_agendamentos
+    FROM
+    ${tabelaAgendamentoFuncionario} af
+    LEFT JOIN
+    ${tabelaAgendamentos} a ON af.agendamento_id = a.id
+    GROUP BY
+        funcionario_id) AS agendamentos_count ON f.id = agendamentos_count.funcionario_id
+WHERE
+    f.id = ${search}`
+    
+    let result = await prisma.$queryRawUnsafe(sql);
+    result[0].total_agendamentos = parseInt(result[0].total_agendamentos)
         return result
     } catch (error) {
         console.error(error);
         return false
     }
 }
-const pegarUltimoId = async function() {
+const pegarUltimoId = async function () {
     try {
         let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM ${tabela} limit 1;`
-    let result = await prisma.$queryRawUnsafe(sql)
-    if(result){
-        return result[0].id
-    } else {
-         return false
-    }
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (result) {
+            return result[0].id
+        } else {
+            return false
+        }
     } catch (error) {
         console.error(error);
-        return false    
+        return false
     }
 }
-const selectAllVeterinarios = async function (){
+const selectAllVeterinarios = async function () {
     try {
         const sql = `select ${tabela}.id,${tabela}.nome from ${tabela} join ${tabelaCargosFuncionarios} on ${tabela}.id = ${tabelaCargosFuncionarios}.funcionario_id where cargo_id = 1`
         let result = await prisma.$queryRawUnsafe(sql);
@@ -153,7 +191,7 @@ const insertCargoFuncionario = async function (dados) {
         let sql = `INSERT INTO ${tabelaCargosFuncionarios} (cargo_id, funcionario_id) VALUES (?, ?)`;
         let result = await prisma.$executeRawUnsafe(sql,
             dados.idCargo,
-             dados.idFuncionario);             
+            dados.idFuncionario);
         return result ? true : false;
     } catch (error) {
         console.error(error);
@@ -163,7 +201,7 @@ const insertCargoFuncionario = async function (dados) {
 
 
 
-module.exports= {
+module.exports = {
     insert,
     update,
     deletar,
@@ -171,5 +209,5 @@ module.exports= {
     selectAll,
     selectById,
     selectAllVeterinarios,
-    insertCargoFuncionario
+    insertCargoFuncionario,
 }
