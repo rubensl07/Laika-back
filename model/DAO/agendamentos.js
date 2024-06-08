@@ -88,7 +88,6 @@ const selectAll = async function (){
             asv.agendamento_id
     ) s ON a.id = s.agendamento_id`;
         let result = await prisma.$queryRawUnsafe(sql);
-        console.log(result);
         return result;
     } catch (error) {
         console.error(error);
@@ -143,7 +142,6 @@ const selectById = async function (id) {
         a.id = ${id};
     `;
         let result = await prisma.$queryRawUnsafe(sql);
-        console.log(sql);
         return result
     } catch (error) {
         console.error(error);
@@ -174,11 +172,10 @@ const update = async function (id, dados) {
         let sql = `
             UPDATE ${tabela}
             SET 
-                data = '${dados.data_agendamento}',
-                animal = '${dados.animal_id}',
-                receita = '${dados.receita}',
-            WHERE id = ${id};
+                data_agendamento = '${dados.data_agendamento}'
+        WHERE id = ${id};
         `;
+        console.log(sql);
         let result = await prisma.$executeRawUnsafe(sql)
         if(result) {
             return true

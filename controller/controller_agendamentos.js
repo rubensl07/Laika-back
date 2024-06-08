@@ -59,6 +59,36 @@ const setInserir = async function (dados, contentType) {
         return message.ERROR_INTERNAL_SERVER; // 500 - Erro na controller
     }
 };
+const setAtualizar = async function (id, dados, contentType) {
+    try{
+        if(String(contentType).toLowerCase()== 'application/json'){
+            let json = {}
+            if (
+                dados.data_agendamento == ''|| dados.data_agendamento == undefined|| dados.data_agendamento == null||dados.data_agendamento.length != 10
+            )
+            {
+               return message.ERROR_REQUIRED_FIELDS //400
+            } else {
+                let result = await DAO.update(id, dados)
+                if(result) {
+                    json.dados = dados
+                    json.status = message.SUCCESS_ACCEPTED_ITEM.status
+                    json.status_code = message.SUCCESS_ACCEPTED_ITEM.status_code
+                    json.message = message.SUCCESS_ACCEPTED_ITEM.message
+                    json.id = parseInt(id)
+                    return json //201
+                } else {
+                    return message.ERROR_NOT_FOUND //404
+                }
+            }
+        } else {
+            return message.ERROR_CONTENT_TYPE // 415
+        }
+    } catch (error){
+        console.error(error);
+        return message.ERROR_INTERNAL_SERVER //500 - Erro na controller
+    }
+}
 
 
 
@@ -304,7 +334,7 @@ const setInserirAgendamentoServicos = async function (dados, contentType) {
 
 module.exports = {
     setInserir,
-    // setAtualizar,
+    setAtualizar,
     setExcluir,
     getAll,
     getId,
