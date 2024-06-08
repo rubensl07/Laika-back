@@ -24,6 +24,16 @@ const selectById = async function (id) {
         return false
     }
 }
+const selectByIdImg = async function (id) {
+    try {
+        const sql = `select img FROM ${tabela} WHERE id = ${id}`;
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
 const pegarUltimoId = async function() {
     try {
         let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM ${tabela} limit 1;`
@@ -111,6 +121,7 @@ const deletar = async function (id) {
 module.exports= {
     selectAll,
     selectById,
+    selectByIdImg,
     pegarUltimoId,
     insert,
     update,

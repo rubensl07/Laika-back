@@ -82,6 +82,12 @@ server.get('/v1/laika/cliente/:id', cors(), async function(request, response,){
     response.status(dados.status_code)
     response.json(dados)
 })
+server.get('/v1/laika/cliente/img', cors(), async function(request, response,){
+    let dados = await controllerClientes.getImg(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
+
 server.post('/v1/laika/cliente', cors(), bodyParserJSON, async function(request, response) {
     let contentType = request.headers['content-type'];
     let dadosBody = request.body;
