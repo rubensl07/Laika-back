@@ -148,7 +148,11 @@ const setInserir = async function (dados, contentType) {
                 dados.nome == '' || dados.nome == undefined || dados.nome == null || dados.nome.length > 100 ||
                 dados.dono_id == '' || dados.dono_id == undefined || dados.dono_id == null || isNaN(dados.dono_id) ||
                 dados.porte_id == '' || dados.porte_id == undefined || dados.porte_id == null || isNaN(dados.porte_id) ||
-                dados.raca_id == '' || dados.raca_id == undefined || dados.raca_id == null || isNaN(dados.raca_id)
+                dados.raca_id == '' || dados.raca_id == undefined || dados.raca_id == null || isNaN(dados.raca_id) ||
+                dados.peso == '' || dados.peso == undefined || dados.peso == null || isNaN(dados.peso) ||
+                dados.nascimento == '' || dados.nascimento == undefined || dados.nascimento == null || dados.nascimento.length != 10 ||
+                dados.img == '' || dados.img == undefined || dados.img == null || dados.img.length > 200
+
             ) {
                 console.log(dados);
                 return message.ERROR_REQUIRED_FIELDS //400
@@ -192,7 +196,12 @@ const setAtualizar = async function (id, dados, contentType) {
         if(String(contentType).toLowerCase()== 'application/json'){
             let json = {}
             if (
-                dados.nome == '' || dados.nome == undefined || dados.nome == null || dados.nome.length > 100
+                dados.nome == '' || dados.nome == undefined || dados.nome == null || dados.nome.length > 100 ||
+                dados.porte_id == '' || dados.porte_id == undefined || dados.porte_id == null || isNaN(dados.porte_id) ||
+                dados.raca_id == '' || dados.raca_id == undefined || dados.raca_id == null || isNaN(dados.raca_id) ||
+                dados.peso == '' || dados.peso == undefined || dados.peso == null || isNaN(dados.peso) ||
+                dados.nascimento == '' || dados.nascimento == undefined || dados.nascimento == null || dados.nascimento.length != 10 ||
+                dados.img == '' || dados.img == undefined || dados.img == null || dados.img.length > 200
             ) {
                return message.ERROR_REQUIRED_FIELDS //400
             } else {

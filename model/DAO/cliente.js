@@ -34,9 +34,19 @@ const selectAllLogin = async function () {
         return false
     }
 }
+const selectByIdNome = async function (id) {
+    try {
+        const sql = `select nome FROM ${tabela} WHERE id = ${id}`;
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
 const selectByIdLogin = async function (id) {
     try {
-        const sql = `select id,email,senha FROM ${tabela} WHERE id = ${id}`;
+        const sql = `select email,senha FROM ${tabela} WHERE id = ${id}`;
         let result = await prisma.$queryRawUnsafe(sql);
         return result
     } catch (error) {
@@ -143,6 +153,7 @@ module.exports= {
     selectAllLogin,
     selectById,
     selectByIdLogin,
+    selectByIdNome,
     selectByIdImg,
     pegarUltimoId,
     insert,

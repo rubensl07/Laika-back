@@ -55,7 +55,9 @@ const update = async function (id, dados) {
                 nome = '${dados.nome}',
                 nascimento = '${dados.nascimento}',
                 peso = '${dados.peso}',
-                img = '${dados.img}'
+                img = '${dados.img}',
+                porte_id = '${dados.porte_id}',
+                raca_id = '${dados.raca_id}'
             WHERE id = ${id};
         `;
         let result = await prisma.$executeRawUnsafe(sql)

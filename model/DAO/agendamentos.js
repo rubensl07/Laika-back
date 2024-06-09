@@ -233,11 +233,24 @@ const selectByClienteId = async function (id) {
 }
 
 
+const selectByAnimalId = async function (id) {
+    try {
+        const sql = ` select id,data_agendamento,receita from tbl_agendamentos where animal_id = ${id}`
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+
 
 
 module.exports = {
     selectAll,
     selectById,
+    selectByAnimalId,
     insert,
     update,
     deletar,

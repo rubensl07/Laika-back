@@ -102,6 +102,11 @@ server.get('/v1/laika/cliente/login/:id', cors(), async function(request, respon
     response.status(dados.status_code)
     response.json(dados)
 })
+server.get('/v1/laika/cliente/nome/:id', cors(), async function(request, response,){
+    let dados = await controllerClientes.getIdNome(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
 
 server.get('/v1/laika/cliente/img/:id', cors(), async function(request, response,){
     let dados = await controllerClientes.getImg(request.params.id);
@@ -499,6 +504,11 @@ server.get('/v1/laika/agendamentos', cors(), async function(request, response) {
 
 server.get('/v1/laika/agendamento/:id', cors(), async function(request, response) {
     let dados = await controllerAgendamentos.getId(request.params.id);
+    response.status(dados.status_code);
+    response.json(dados);
+});
+server.get('/v1/laika/agendamentos/animal/:id', cors(), async function(request, response) {
+    let dados = await controllerAgendamentos.getAllAnimal(request.params.id);
     response.status(dados.status_code);
     response.json(dados);
 });
