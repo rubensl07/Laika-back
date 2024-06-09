@@ -22,6 +22,7 @@ const deletar = async function (id) {
 }
 const selectAll = async (search) => {
     try {
+        console.log(search);
         let pesquisaSearch = ''
         if(search.pesquisa){
             pesquisaSearch = search.pesquisa

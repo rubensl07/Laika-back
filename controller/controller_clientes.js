@@ -18,16 +18,11 @@ const getAll = async function () {
             for (let index = 0; index < dados.length; index++) {
                 if(dados[index].endereco_id){
                     const endereco = await enderecosDAO.selectById(dados[index].endereco_id)
-                    const novoEndereco = {}
-                    novoEndereco.rua = endereco[0].rua
-                    novoEndereco.bairro = endereco[0].bairro
-                    novoEndereco.cidade = endereco[0].cidade
-                    novoEndereco.estado = endereco[0].estado
-                    if(endereco[0].complemento){
-                        novoEndereco.complemento = endereco[0].complemento
-                    }
+                    const novoEndereco = endereco[0]
+                    delete novoEndereco.id
                     dados[index].endereco = novoEndereco
                 }
+                delete dados[index].endereco_id
                 delete dados[index].endereco_id
                 let listaAnimais = await animalDAO.selectByClienteId(dados[index].id)
                 let listaAnimaisController = []
@@ -74,14 +69,8 @@ const getId = async function (id) {
             if (dados.length > 0) {
                 if(dados[0].endereco_id){
                     const endereco = await enderecosDAO.selectById(dados[0].endereco_id)
-                    const novoEndereco = {}
-                    novoEndereco.rua = endereco[0].rua
-                    novoEndereco.bairro = endereco[0].bairro
-                    novoEndereco.cidade = endereco[0].cidade
-                    novoEndereco.estado = endereco[0].estado
-                    if(endereco[0].complemento){
-                        novoEndereco.complemento = endereco[0].complemento
-                    }
+                    const novoEndereco = endereco[0]
+                    delete novoEndereco.id
                     dados[0].endereco = novoEndereco
                 }
                 delete dados[0].endereco_id
@@ -119,6 +108,97 @@ const getId = async function (id) {
 
     }
 }
+
+const getAllResumido = async function () {
+    let json = {};
+    let dados = await DAO.selectAll();
+        if (dados) {
+        if(dados.length > 0) {
+            for (let index = 0; index < dados.length; index++) {
+                if(dados[index].endereco_id){
+                    const endereco = await enderecosDAO.selectById(dados[index].endereco_id)
+                    const novoEndereco = endereco[0]
+                    delete novoEndereco.id
+                    dados[index].endereco = novoEndereco
+                }
+                delete dados[index].endereco_id
+            }
+            json.dados = dados;
+            json.quantidade = dados.length
+            json.status_code = 200
+            return json
+        } else {
+            return message.ERROR_NOT_FOUND //404
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB //500
+    }
+}
+
+const getIdResumido = async function (id) {
+    let json = {};
+    if (id == '' || id == undefined || isNaN(id)) {
+        return message.ERROR_INVALID_ID; //400
+    } else {
+        let dados = await DAO.selectById(id);
+        if (dados) {
+            if (dados.length > 0) {
+                if(dados[0].endereco_id){
+                    const endereco = await enderecosDAO.selectById(dados[0].endereco_id)
+                    const novoEndereco = endereco[0]
+                    delete novoEndereco.id
+                    dados[0].endereco = novoEndereco
+                }
+                delete dados[0].endereco_id
+                delete dados[0].id
+                json.dados = dados[0]
+                json.status_code = 200
+                return json
+            } else {
+                return message.ERROR_NOT_FOUND //404
+            }
+        } else {
+            return message.ERROR_INTERNAL_SERVER_DB //500
+        }
+
+    }
+}
+const getAllLogin = async function () {
+    let json = {};
+    let dados = await DAO.selectAllLogin();
+        if (dados) {
+        if(dados.length > 0) {
+            json.dados = dados;
+            json.quantidade = dados.length
+            json.status_code = 200
+            return json
+        } else {
+            return message.ERROR_NOT_FOUND //404
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB //500
+    }
+}
+const getIdLogin = async function (id) {
+    let json = {};
+    if (id == '' || id == undefined || isNaN(id)) {
+        return message.ERROR_INVALID_ID; //400
+    } else {
+        let dados = await DAO.selectByIdLogin(id);
+        if (dados) {
+            if (dados.length > 0) {
+                json.dados = dados[0]
+                json.status_code = 200
+                return json
+            } else {
+                return message.ERROR_NOT_FOUND //404
+            }
+        } else {
+            return message.ERROR_INTERNAL_SERVER_DB //500
+        }
+    }
+}
+
 
 const getImg = async function (id) {
     let json = {};
@@ -311,6 +391,10 @@ module.exports = {
     setAtualizar,
     setExcluir,
     getAll,
+    getAllResumido,
     getId,
+    getIdResumido,
+    getAllLogin,
+    getIdLogin,
     getImg
 };

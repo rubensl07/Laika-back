@@ -1,3 +1,4 @@
+const message = require('../modulo/config.js')
 const DAO = require('../model/DAO/racas.js');
 
 const getAll = async function () {

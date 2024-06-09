@@ -52,9 +52,9 @@ const setInserir = async function (dados, contentType) {
     } else {
         let validateStatus = false
             if(
-                dados.complemento != ''&& dados.complemento != undefined&& dados.complemento && null
+                dados.numero != ''&& dados.numero != undefined&& dados.numero && null
             ){
-                if(dados.complemento.length > 100){
+                if(dados.numero.length > 100){
                     return message.ERROR_REQUIRED_FIELDS //400
                 } else {
                     validateStatus = true
@@ -101,9 +101,9 @@ const setAtualizar = async function (id, dados, contentType) {
             } else {
                 let validateStatus = false
                 if(
-                    dados.complemento != ''&&dados.complemento != undefined&& dados.complemento != null
+                    dados.numero != ''&&dados.numero != undefined&& dados.numero != null
                 ){
-                    if(dados.complemento.length > 100){
+                    if(dados.numero.length > 100){
                         return message.ERROR_REQUIRED_FIELDS //400
                     } else {
                         validateStatus = true

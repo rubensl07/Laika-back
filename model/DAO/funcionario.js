@@ -165,6 +165,17 @@ WHERE
         return false
     }
 }
+
+const selectAllLogin = async function () {
+    try {
+        const sql = `select id,email,senha FROM ${tabela}`;
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
 const pegarUltimoId = async function () {
     try {
         let sql = `SELECT CAST(LAST_INSERT_ID() AS DECIMAL) AS id FROM ${tabela} limit 1;`
@@ -212,6 +223,7 @@ module.exports = {
     pegarUltimoId,
     selectAll,
     selectById,
+    selectAllLogin,
     selectAllVeterinarios,
     insertCargoFuncionario,
 }

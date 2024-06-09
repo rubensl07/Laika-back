@@ -77,11 +77,32 @@ server.get('/v1/laika/clientes', cors(), async function(request, response,){
     response.status(dados.status_code)
     response.json(dados)
 })
+server.get('/v1/laika/clientes/resumo', cors(), async function(request, response,){
+    let dados = await controllerClientes.getAllResumido();
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/clientes/login', cors(), async function(request, response,){
+    let dados = await controllerClientes.getAllLogin();
+    response.status(dados.status_code)
+    response.json(dados)
+})
 server.get('/v1/laika/cliente/:id', cors(), async function(request, response,){
     let dados = await controllerClientes.getId(request.params.id);
     response.status(dados.status_code)
     response.json(dados)
 })
+server.get('/v1/laika/cliente/resumo/:id', cors(), async function(request, response,){
+    let dados = await controllerClientes.getIdResumido(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/cliente/login/:id', cors(), async function(request, response,){
+    let dados = await controllerClientes.getIdLogin(request.params.id);
+    response.status(dados.status_code)
+    response.json(dados)
+})
+
 server.get('/v1/laika/cliente/img/:id', cors(), async function(request, response,){
     let dados = await controllerClientes.getImg(request.params.id);
     response.status(dados.status_code)
@@ -120,6 +141,16 @@ server.get('/v1/laika/funcionarios', cors(), async function(request, response,){
         cargos: request.query.cargos
     } 
     let dados = await controllerFuncionarios.getAll(search);
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/clientes/veterinarios', cors(), async function(request, response,){
+    let dados = await controllerFuncionarios.getAllVeterinarios();
+    response.status(dados.status_code)
+    response.json(dados)
+})
+server.get('/v1/laika/funcionarios/login', cors(), async function(request, response,){
+    let dados = await controllerFuncionarios.getAllLogin();
     response.status(dados.status_code)
     response.json(dados)
 })
@@ -380,7 +411,6 @@ server.get('/v1/laika/animais', async (req, res) => {
     let result = await controllerAnimais.getAll();
     res.status(result.status_code).json(result);
 });
-
 
 server.get('/v1/laika/animal/:id', async (req, res) => {
     let result = await controllerAnimais.getId(req.params.id);

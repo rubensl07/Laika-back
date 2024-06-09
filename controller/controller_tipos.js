@@ -1,3 +1,4 @@
+const message = require('../modulo/config.js')
 const DAO = require('../model/DAO/tipos.js');
 
 const getAll = async function () {

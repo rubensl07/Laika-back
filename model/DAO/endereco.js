@@ -13,9 +13,9 @@ const insert = async function(dados){
         let sql
         let result = null
         if(
-            dados.complemento != '' &&
-            dados.complemento != null &&
-            dados.complemento != undefined
+            dados.numero != '' &&
+            dados.numero != null &&
+            dados.numero != undefined
         )
         {
             sql = `INSERT INTO ${tabela} (
@@ -23,14 +23,14 @@ const insert = async function(dados){
                 bairro,
                 cidade, 
                 estado, 
-                complemento
+                numero
             ) VALUES (?, ?, ?, ?, ?)`;
             result = await prisma.$executeRawUnsafe(sql, 
                 dados.rua,
                 dados.bairro,
                 dados.cidade,
                 dados.estado,
-                dados.complemento
+                dados.numero
             )
         } else {
             sql = `INSERT INTO ${tabela} (
@@ -62,9 +62,9 @@ const update = async function (id, dados) {
         let sql
         let result = null
         if(
-            dados.complemento != '' &&
-            dados.complemento != null &&
-            dados.complemento != undefined
+            dados.numero != '' &&
+            dados.numero != null &&
+            dados.numero != undefined
         ){
             sql = `
             UPDATE ${tabela}
@@ -73,7 +73,7 @@ const update = async function (id, dados) {
                 bairro = '${dados.bairro}',
                 cidade = '${dados.cidade}',
                 estado = '${dados.estado}',
-                complemento = '${dados.complemento}'
+                numero = '${dados.numero}'
             WHERE id = ${id}
         `
         console.log(sql);

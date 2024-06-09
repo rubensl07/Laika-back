@@ -85,12 +85,28 @@ const getId = async function (id) {
 }
 
 // Função para obter animais por ID do cliente com detalhes completos
-const getByClienteId = async function (clienteId) {
+const getByClienteId = async function (id) {
+
     let resultJSON = {};
-    let dados = await DAO.selectByClienteId(clienteId);
+    let dados = await DAO.selectByClienteId(id);
 
     if (dados) {
         if (dados.length > 0) {
+            for (let index = 0; index < dados.length; index++) {
+                const racaJSON = (await racasDAO.selectById(dados[index].raca_id))[0]
+                delete dados[index].cliente_id
+                dados[index].tipo = (await tiposDAO.selectById(racaJSON.tipo_id))[0]
+                delete racaJSON.tipo_id
+                if (racaJSON.srd) {
+                    delete dados[index].raca
+                } else {
+                    delete racaJSON.srd
+                    dados[index].raca = racaJSON
+                }
+                delete dados[index].raca_id
+                dados[index].porte = (await portesDAO.selectById(dados[index].porte_id))[0]
+                delete dados[index].porte_id
+            }
             resultJSON.dados = dados;
             resultJSON.quantidade = dados.length;
             resultJSON.status_code = 200;
@@ -102,6 +118,7 @@ const getByClienteId = async function (clienteId) {
         return message.ERROR_INTERNAL_SERVER_DB; // 500
     }
 }
+
 const setInserir = async function (dados, contentType) {
     try {
         if (String(contentType).toLowerCase() == 'application/json') {

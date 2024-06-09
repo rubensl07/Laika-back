@@ -79,6 +79,22 @@ const getAllVeterinarios = async function () {
         return message.ERROR_INTERNAL_SERVER_DB //500
     }
 }
+const getAllLogin = async function () {
+    let json = {};
+    let dados = await DAO.selectAllLogin();
+        if (dados) {
+        if(dados.length > 0) {
+            json.dados = dados;
+            json.quantidade = dados.length
+            json.status_code = 200
+            return json
+        } else {
+            return message.ERROR_NOT_FOUND //404
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB //500
+    }
+}
 
 const getId = async function (id) {
     let json = {};
@@ -251,6 +267,7 @@ module.exports = {
     setAtualizar,
     setExcluir,
     getAll,
+    getAllLogin,
     getId,
     getAllVeterinarios,
 }
