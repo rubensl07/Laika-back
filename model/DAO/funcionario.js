@@ -29,12 +29,16 @@ const insert = async function (dados) {
         }
         else{
             sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id) VALUES (?, ?, ?, ?, ?);`;
-            dados.nome,
-            dados.telefone,
-            dados.email,
-            dados.senha,
-            dados.endereco_id
+            result = await prisma.$executeRawUnsafe(sql,
+                dados.nome,
+                dados.telefone,
+                dados.email,
+                dados.senha,
+                dados.endereco_id
+            )
         }
+
+        console.log(sql);
         if (result) {
             return true
         } else {
