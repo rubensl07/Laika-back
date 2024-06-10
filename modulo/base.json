@@ -1,0 +1,31 @@
+{
+    "API": "API do Laika",
+    "descricao": "Dados do database que são consumidos pelo site Laika PetShop",
+    "autores": [
+        {
+            "nome": "Rubens Luiz Lobo de Almeida",
+            "contato":"rubensluizlobo@gmail.com"
+        },
+        {
+            "nome": "Pedro Henrique Inocente",
+            "contato": "pedrohrino13@gmail.com"
+
+        }
+    ],
+    "website": "https://leticiamelosilv.github.io/Laika-FRONT/",
+    "documentacao": "https://docs.google.com/document/d/122DTxx1-itmSQc_1oTVQX1uxwRXTPbeS1ZIYpYF9STQ/edit?usp=sharing",
+    "endpoints_disponiveis": [
+        "Animais",
+        "Agendamentos",
+        "Tipos",
+        "Raças",
+        "Portes",
+        "Produtos",
+        "Categorias",
+        "Funcionários",
+        "Cargos",
+        "Serviços",
+        "Cliente",
+        "Endereço"
+    ]
+  }

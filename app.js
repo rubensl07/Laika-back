@@ -10,6 +10,7 @@ var server = express()
 var bodyParser = require ('body-parser')
 const bodyParserJSON = bodyParser.json()
 var cors = require('cors') 
+const base = require('./modulo/base.json')
 
 server.use((request,response,next)=>{
     response.header('Access-Control-Allow-Origin','*');
@@ -21,47 +22,7 @@ server.use((request,response,next)=>{
 
 server.get('/', async (req, response) => {
     try {
-        const json = 
-        {
-            "API": "API do Laika",
-            "endpoints_disponiveis": [
-              {
-                "animais":{
-                    "descricao":"",
-                    "ENDPOINTS":{
-                        "get": "/animais",
-                        "getById":"/animal/(id)",
-                        "post": "/animais",
-                        "put": "/animais",
-                        "delete":"/animais"
-                    }
-                }
-              },
-              {
-              "clientes":{
-                    "descricao":"",
-                    "ENDPOINTS":{
-                        "get": "/clientes",
-                        "getById":"/cliente/(id)",
-                        "post": "/cliente",
-                        "delete":"/cliente/(id)"
-                    }
-
-                }
-              },
-              {
-                "endpoint": "/albuns",
-                "descricao": "Retorna informações sobre álbuns."
-              }
-            ],
-            "autor": "Essa API foi produzida por Rubens Lobo, vulgo, Wolfy",
-            "contato": {
-              "email": "rubensluizlobo@gmail.com"
-//              "website": "https://api-musica.com"
-            }
-//            "documentacao": "https://api-musica.com/documentacao"
-          }
-          
+        const json = base
         return response.json(json);
     } catch (error) {
         console.error(error);
