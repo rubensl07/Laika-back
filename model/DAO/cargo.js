@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 var tabela = "tbl_cargos"
-
+var tabelaCargosFuncionarios = "tbl_cargos_funcionarios"
 const insert = async function(dados){
     try {
         let sql = `INSERT INTO ${tabela} (nome) VALUES (?);`;
@@ -87,6 +87,18 @@ const selectById = async function (search) {
     }
 }
 
+
+const removerCargos = async function (search) {
+    try {
+        const sql = `delete from ${tabelaCargosFuncionarios} where funcionario_id = ${search}`;
+        let result = await prisma.$executeRawUnsafe(sql);
+        return result
+    } catch (error) {
+        console.error(error);
+        return false
+    }
+}
+
 module.exports = {
     insert,
     update,
@@ -94,4 +106,5 @@ module.exports = {
     pegarUltimoId,
     selectAll,
     selectById,
+    removerCargos,
 };

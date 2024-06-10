@@ -9,14 +9,32 @@ var tabelaAgendamentoFuncionario = "tbl_agendamento_funcionario"
 
 const insert = async function (dados) {
     try {
-        let sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id) VALUES (?, ?, ?, ?, ?);`;
-        
-        let result = await prisma.$executeRawUnsafe(sql,
+        let sql
+        let result = null
+        if(
+            dados.img != '' &&
+            dados.img != null &&
+            dados.img != undefined
+        )
+        {
+            sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id, img) VALUES (?, ?, ?, ?, ?, ?);`;
+            result = await prisma.$executeRawUnsafe(sql,
+                dados.nome,
+                dados.telefone,
+                dados.email,
+                dados.senha,
+                dados.endereco_id,
+                dados.img
+            )
+        }
+        else{
+            sql = `INSERT INTO ${tabela} (nome, telefone, email, senha, endereco_id) VALUES (?, ?, ?, ?, ?);`;
             dados.nome,
             dados.telefone,
             dados.email,
             dados.senha,
-            dados.endereco_id);
+            dados.endereco_id
+        }
         if (result) {
             return true
         } else {
@@ -30,15 +48,27 @@ const insert = async function (dados) {
 
 const update = async function (id, dados) {
     try {
-        let sql = `
-            UPDATE ${tabela}
-            SET 
+        let sql
+        if(
+            dados.img != '' &&
+            dados.img != null &&
+            dados.img != undefined
+        ){
+            sql =  `UPDATE ${tabela} SET 
+            nome = '${dados.nome}',
+            telefone = '${dados.telefone}',
+            email = '${dados.email}',
+            senha = '${dados.senha}',
+            img = '${dados.img}'
+            WHERE id = ${id}`
+        } else {
+           sql =  `UPDATE ${tabela} SET 
                 nome = '${dados.nome}',
                 telefone = '${dados.telefone}',
                 email = '${dados.email}',
                 senha = '${dados.senha}'
-            WHERE id = ${id};
-        `;
+                WHERE id = ${id}`
+        }
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
             return true
@@ -88,6 +118,7 @@ const selectAll = async function (search) {
     f.telefone,
     f.email,
     f.senha,
+    f.img,
     f.endereco_id,
     GROUP_CONCAT(c.id SEPARATOR '-') AS cargos,
     COALESCE(total_agendamentos, 0) AS total_agendamentos
@@ -135,6 +166,7 @@ const selectById = async function (search) {
     f.telefone,
     f.email,
     f.senha,
+    f.img,
     f.endereco_id,
     GROUP_CONCAT(c.id SEPARATOR '-') AS cargos,
     COALESCE(total_agendamentos, 0) AS total_agendamentos

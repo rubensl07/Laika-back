@@ -228,6 +228,17 @@ const setAtualizar = async function (id, dados, contentType) {
                 }
                 let result = await DAO.update(id, dados)
                 if(result) {
+                    if (dados.cargos) {
+                        const result = await cargosDAO.removerCargos(id)
+                        console.log(result);
+                        (dados.cargos).forEach(element => {
+                            const json = {
+                                idFuncionario: id,
+                                idCargo: element
+                            };
+                            DAO.insertCargoFuncionario(json);
+                        });
+                    }
                     json.dados = dados
                     json.status = message.SUCCESS_ACCEPTED_ITEM.status
                     json.status_code = message.SUCCESS_ACCEPTED_ITEM.status_code

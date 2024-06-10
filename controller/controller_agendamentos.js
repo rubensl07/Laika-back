@@ -164,9 +164,25 @@ const getAll = async function () {
 }
 
 
+
 const getAllAnimal = async function (id) {
     let json = {};
     let dados = await DAO.selectByAnimalId(id);
+    if (dados) {
+        if (dados.length > 0) {
+            json.dados = dados;
+            json.status_code = 200;
+            return json;
+        } else {
+            return message.ERROR_NOT_FOUND; // 404
+        }
+    } else {
+        return message.ERROR_INTERNAL_SERVER_DB; // 500
+    }
+}
+const getAllCliente = async function (id) {
+    let json = {};
+    let dados = await DAO.selectByClienteId(id);
     if (dados) {
         if (dados.length > 0) {
             json.dados = dados;
@@ -300,6 +316,7 @@ module.exports = {
     setExcluir,
     getAll,
     getAllAnimal,
+    getAllCliente,
     getId,
     setInserirAgendamentoFuncionarios,
     setInserirAgendamentoServicos,
