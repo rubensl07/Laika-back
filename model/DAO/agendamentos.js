@@ -170,13 +170,27 @@ const insert = async function(dados){
 
 const update = async function (id, dados) {
     try{
-        let sql = `
+        let sql
+        if(
+            dados.receita != '' &&
+            dados.receita != null &&
+            dados.receita != undefined
+        ){
+            sql = `
+            UPDATE ${tabela}
+            SET 
+                data_agendamento = '${dados.data_agendamento}',
+                receita = '${dados.receita}'
+        WHERE id = ${id};
+        `
+        } else {
+            sql = `
             UPDATE ${tabela}
             SET 
                 data_agendamento = '${dados.data_agendamento}'
         WHERE id = ${id};
-        `;
-        console.log(sql);
+        `
+        }
         let result = await prisma.$executeRawUnsafe(sql)
         if(result) {
             return true
