@@ -14,6 +14,11 @@
     ],
     "website": "https://leticiamelosilv.github.io/Laika-FRONT/",
     "documentacao": "https://docs.google.com/document/d/122DTxx1-itmSQc_1oTVQX1uxwRXTPbeS1ZIYpYF9STQ/edit?usp=sharing",
+    "src": {
+        "Front-end": "https://github.com/leticiamelosilv/Laika-FRONT",
+        "Front-end (CMS)": "https://github.com/MatheusNoronhadaSilva/Laika-front",
+        "Back-end": "https://github.com/rubensl07/Laika-back"
+    },
     "endpoints_disponiveis": [
         "Animais",
         "Agendamentos",
