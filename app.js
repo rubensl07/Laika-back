@@ -513,6 +513,11 @@ server.get('/v1/laika/agendamentos/cliente/:id', cors(), async function(request,
     response.status(dados.status_code);
     response.json(dados);
 });
+server.get('/v1/laika/agendamentos/funcionario/:id', cors(), async function(request, response) {
+    let dados = await controllerAgendamentos.getAllFuncionario(request.params.id);
+    response.status(dados.status_code);
+    response.json(dados);
+});
 server.get('/v1/laika/agendamentos/animal/:id', cors(), async function(request, response) {
     let dados = await controllerAgendamentos.getAllAnimal(request.params.id);
     response.status(dados.status_code);

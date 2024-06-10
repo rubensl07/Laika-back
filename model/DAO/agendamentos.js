@@ -236,6 +236,49 @@ const pegarUltimoId = async function() {
     }
 }
 
+const selectByFuncionarioId = async function (id) {
+    try {
+       let sql= ` SELECT 
+        a.id,
+        a.data_agendamento,
+        a.animal_id,
+        a.receita,
+        COALESCE(f.funcionarios, '') AS funcionarios,
+        COALESCE(s.servicos, '') AS servicos
+    FROM
+        tbl_agendamentos a
+    LEFT JOIN (
+        SELECT
+            af.agendamento_id,
+            GROUP_CONCAT(DISTINCT af.funcionario_id SEPARATOR '-') AS funcionarios
+        FROM
+            tbl_agendamento_funcionario af
+        WHERE
+            af.funcionario_id = ${id}
+        GROUP BY
+            af.agendamento_id
+    ) f ON a.id = f.agendamento_id
+    LEFT JOIN (
+        SELECT
+            asv.agendamento_id,
+            GROUP_CONCAT(DISTINCT asv.servico_id SEPARATOR '-') AS servicos
+        FROM
+            tbl_agendamento_servico asv
+        GROUP BY
+            asv.agendamento_id
+    ) s ON a.id = s.agendamento_id
+    WHERE
+        f.agendamento_id IS NOT NULL`
+    console.log(sql);
+        let result = await prisma.$queryRawUnsafe(sql);
+        return result;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+
 const selectByClienteId = async function (id) {
     try {
         const sql = `SELECT 
@@ -304,5 +347,6 @@ module.exports = {
     insertAgendamentoFuncionarios,
     insertAgendamentoServicos,
     pegarUltimoId,
-    selectByClienteId
+    selectByClienteId,
+    selectByFuncionarioId,
 }
