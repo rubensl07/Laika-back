@@ -13,6 +13,7 @@
         }
     ],
     "website": "https://leticiamelosilv.github.io/Laika-FRONT/",
+    "figma": "https://www.figma.com/design/96vSodwxNyPirigyNURBLa/PetShop---LAIKA?node-id=0-1&t=QGW0VRYHTii6uMzS-1",
     "documentacao": "https://docs.google.com/document/d/122DTxx1-itmSQc_1oTVQX1uxwRXTPbeS1ZIYpYF9STQ/edit?usp=sharing",
     "repositorios": {
         "Front-end": "https://github.com/leticiamelosilv/Laika-FRONT",
@@ -32,5 +33,6 @@
         "Serviços",
         "Cliente",
         "Endereço"
-    ]
+    ],
+    "OBS": "Para Acessar os endpoints, deve se formular o link completo: https://laika-back.onrender.com/v1/laika/(nome do endpoint que deseja acessar)"
   }
