@@ -1,0 +1,1603 @@
+{
+	"info": {
+		"_postman_id": "2fc77edb-019b-4190-bdd9-2631eca9759a",
+		"name": "Laika",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31032519",
+		"_collection_link": "https://galactic-eclipse-870331.postman.co/workspace/New-Team-Workspace~c364ebff-a484-4bd8-ae8c-41563e4cf3c1/collection/31032519-2fc77edb-019b-4190-bdd9-2631eca9759a?action=share&source=collection_link&creator=31032519"
+	},
+	"item": [
+		{
+			"name": "Animais",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/animais",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"animais"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/animal/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"animal",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Por Id Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/animais/cliente/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"animais",
+								"cliente",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"nome\": \"Paçoca2\",\r\n            \"nascimento\": \"2014-10-15\",\r\n            \"peso\": \"203\",\r\n            \"img\": null,\r\n            \"dono_id\":1,\r\n            \"porte_id\": 2,\r\n            \"raca_id\": 1\r\n}\r\n        ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/animal",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"animal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/animal/10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"animal",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"nome\": \"Paçoca5\",\r\n            \"nascimento\": \"2014-10-15\",\r\n            \"peso\": 203,\r\n            \"img\": null,\r\n            \"dono_id\":1,    \r\n            \"porte_id\": 2,\r\n            \"raca_id\": 1\r\n}\r\n        ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/animal/9",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"animal",
+								"9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Agendamento",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamentos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamento/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamento",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Por Id Funcionário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamentos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Por Id Cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamentos/cliente/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamentos",
+								"cliente",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Por Id Animal",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamentos/animal/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamentos",
+								"animal",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data_agendamento\": \"2020-04-20\",\r\n    \"animal_id\": 2,\r\n    \"servicos\": [1],\r\n    \"funcionarios\": [1,6]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamento",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamento/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamento",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"data_agendamento\": \"2020-04-21\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/agendamento/47",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"agendamento",
+								"47"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tipos",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/tipos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"tipos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/tipo/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"tipo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Raças",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/racas",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"racas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/raca/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"raca",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Raças por tipo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/racas/tipo/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"racas",
+								"tipo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Portes",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/portes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"portes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/porte/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"porte",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categorias",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/categorias",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/categoria/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"categoria",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"sla\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/categoria",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/categoria/7",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"categoria",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Cargo Editadaço\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/categoria/5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"categoria",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cargo",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cargos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cargos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cargo/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cargo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"sla\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cargo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cargo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cargo/3",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cargo",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Cargo Editadaço\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cargo/5",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cargo",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Serviço",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/servicos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"servicos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/servico/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"servico",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Serviço teste\",\r\n    \"descricao\":\"Serviço à serviço de teste\",\r\n    \"preco\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/servico",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"servico"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "       {\r\n            \"nome\": \"Hospedagem\",\r\n            \"descricao\": \"Seu Pet não se sente confortável fora de casa? Podemos ir até seu aconchego para fornecer companhia.\",\r\n            \"preco\": \"200\"\r\n        }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/servico/7",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"servico",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Funcionário",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/funcionarios",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"funcionarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Veterinários",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/veterinarios",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"veterinarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar (Login)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/funcionarios/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"funcionarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/funcionario/25",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"funcionario",
+								"25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"fulano\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": \"123\",\r\n    \"endereco\":{\r\n        \"rua\": \"tal\",\r\n        \"bairro\": \"d\",\r\n        \"cidade\": \"Itapevi\",\r\n        \"estado\": \"SP\"\r\n    },\r\n    \"cargos\": [1]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/funcionario",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"funcionario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/funcionario/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"funcionario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n            \"nome\": \"Teteu\",\r\n            \"telefone\": \"11111111111\",\r\n            \"email\": \"teteu@email\",\r\n            \"senha\": \"123\",\r\n            \"img\": \"https://i.ibb.co/hg1QHGV/Imagem-do-Whats-App-de-2024-06-09-s-21-18-36-0098604b.jpg\",\r\n        \"cargos\":[4,2]\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/funcionario/23",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"funcionario",
+								"23"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Produto",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/produtos?pesquisa=teste&precoMin=3&precoMax=20",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"produtos"
+							],
+							"query": [
+								{
+									"key": "pesquisa",
+									"value": "teste"
+								},
+								{
+									"key": "precoMin",
+									"value": "3"
+								},
+								{
+									"key": "precoMax",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/produto/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Produto teste\",\r\n    \"descricao\":\"Produto que é, na verdade, um teste\",\r\n    \"preco\": 10,\r\n    \"img\": \"https://m.media-amazon.com/images/I/61krIHXdNGS._AC_UF1000,1000_QL80_.jpg\",\r\n    \"idCategoria\": 3,\r\n    \"quantidade_estoque\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/produto",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"produto"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/produto/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"produto",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Produto editado\",\r\n    \"descricao\":\"Produto que foi editado\",\r\n    \"preco\": 20,\r\n    \"img\": \"dadwad\",\r\n    \"quantidade_estoque\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/produto/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"produto",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/clientes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar (Resumido)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/clientes/resumo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"clientes",
+								"resumo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar (Login)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/clientes/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"clientes",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id (Resumido)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/resumo/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"resumo",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id (Login)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/login/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"login",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id (Nome)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/nome/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"nome",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Img por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/img/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"img",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": \"123\",\r\n    \"img\": \"urltal.com\",\r\n    \"endereco\":{\r\n        \"rua\": \"d\",\r\n        \"bairro\": \"d\",\r\n        \"cidade\": \"Itapevi\",\r\n        \"estado\": \"SP\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": \"123\",\r\n    \"endereco\": {\r\n        \"rua\": \"Marechal Editado3\",\r\n        \"bairro\": \"Sei lá. Foi editado\",\r\n        \"cidade\": \"Caracas\",\r\n        \"estado\": \"AM\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/cliente/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"cliente",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endereço",
+			"item": [
+				{
+					"name": "Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/enderecos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"enderecos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Por Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/endereco/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"endereco",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rua\": \"Marechal Fulano\",\r\n    \"bairro\": \"Algum aí\",\r\n    \"cidade\": \"Barueri\",\r\n    \"estado\": \"SP\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/endereco",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"endereco"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Pedro\",\r\n    \"telefone\": \"11111111111\",\r\n    \"email\": \"inocente@email\",\r\n    \"senha\": 123,\r\n    \"img\":\"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/endereco/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"endereco",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"rua\": \"Marechal Editado\",\r\n    \"bairro\": \"Sei lá. Foi editado\",\r\n    \"cidade\": \"Caracas\",\r\n    \"estado\": \"AM\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{versao}}/laika/endereco/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{versao}}",
+								"laika",
+								"endereco",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "versao",
+			"value": "v1"
+		},
+		{
+			"key": "url",
+			"value": "https://laika-back.onrender.com"
+		}
+	]
+}
